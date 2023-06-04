@@ -1,0 +1,6 @@
+# NODE.JS RELATED
+node_modules/
+package-lock.json
+
+# GIT RELATED
+.git/
