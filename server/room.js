@@ -62,7 +62,7 @@ class L3GBAroom{
 export class L3GBARoomList{
     constructor(){
         this.roomMap= new Map()
-        this.roomMap.set("id", new L3GBAroom("id", "passwd"))
+        //this.roomMap.set("id", new L3GBAroom("id", "passwd"))
     }
     /*
         function to clean unused rooms
