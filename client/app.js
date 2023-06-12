@@ -68,7 +68,7 @@ var gbaWidth
 var gbaHeight
 var cheatCode
 
-var isSyncPause
+var isStarted = false
 
 
 function processAudio(event) {
@@ -260,8 +260,9 @@ function loadRomArrayBuffer(arrayBuffer) {
 }
 
 function startEmulation(){
+    isStarted=true
 	document.getElementById('menu').hidden = true
-	document.getElementById('settings').hidden = false
+	document.getElementById('pause').hidden = false
     loadSaveGame(0, function () {
         Module._emuResetCpu()
         //applyCheatCode()
@@ -489,7 +490,7 @@ function handleTouch(event) {
         }
     }
     if (keyState['menu'][2]) {
-        setPauseMenu(true)
+        setPauseMenu(true, true)
     }
     if (keyState['turbo'][2] != keyState['turbo'][1]) {
         setTurboMode(keyState['turbo'][2])
@@ -637,7 +638,7 @@ const normalKeyUp=(e)=> {
         keyState[keyList[k]][1] = 0
     }
     if (e.keyCode == 27) {
-        setPauseMenu(true)
+        setPauseMenu(true, true)
     }
 }
 
@@ -686,14 +687,16 @@ function setTurboMode(t) {
     }
     turboMode = t
 }
-
-function setPauseMenu(t) {
-	if(t && !isSyncPause){
-		socket.send("p_on")
-	}else if(!t  && !isSyncPause){
-		socket.send("p_off")
+/*
+    @t bool pause state
+    @broadcast bool, relay to other client or not
+*/
+function setPauseMenu(t, broadcast) {
+	if(t && broadcast){
+		socket.send("o")
+	}else if(!t  && broadcast){
+		socket.send("f")
 	}
-	isSyncPause=false
     if (!t) {
         // Save cheat code
         var cheatCode = filterCheatCode($id('txt-code').value)
@@ -703,9 +706,9 @@ function setPauseMenu(t) {
         }
     }
     t = t ? true : false
-    isRunning = !t
+    isRunning = !t && isStarted
     document.getElementById('menu').hidden = !t
-    document.getElementById('settings-btn').hidden = t
+    document.getElementById('pause').hidden = t
 }
 
 localforage.ready().then(function () { }).catch(function (err) {
@@ -763,3 +766,17 @@ function filterCheatCode(code) {
     }
 }
 
+{ //pause to menu
+    
+    document.getElementById("pause").onclick=function(){
+        //this prevents to trigger pause again in a sort of vicious lopp 
+        setPauseMenu(true, true)
+    }
+}
+
+{ //menu to continue
+    document.getElementById("return").onclick=function(){
+        //this prevents to trigger pause again in a sort of vicious loop  
+        setPauseMenu(false, true)
+    }
+}

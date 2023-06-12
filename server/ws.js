@@ -82,13 +82,13 @@ export function init(rooms){
 			let msg = data.toString()
 			switch(msg[0]){
 				case "d":
-					wss.broadcast(data, ws)
+					wss.broadcast(msg, ws)
 				case "u":
-					wss.broadcast(data, ws)
+					wss.broadcast(msg, ws)
 				case "o":
-					wss.broadcast(data, ws)
+					wss.broadcast(msg, ws)
 				case "f":
-					wss.broadcast(data, ws)
+					wss.broadcast(msg, ws)
 					break;
 				case "n":
 					ws.username=msg.substring(2).substring(0,20)

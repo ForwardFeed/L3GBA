@@ -38,7 +38,11 @@ function addUser(username, flag){
 		}
 		div.append(newUser)
 	}else{
-		div.removeChild(document.getElementById("user-"+username))
+		let child = document.getElementById("user-"+username)
+		if (child){
+			div.removeChild(child)
+		}
+		
 	}
 }
 
@@ -79,7 +83,7 @@ let parseAuth = (msg)=>{
 	let data = msg.data
 	if(data=="valid"){
 		socket.removeEventListener("message", parseAuth)
-		socket.addEventListener("message",blobInterface)
+		socket.addEventListener("message",L3GBAAPIParsing)
 		let username= localStorage.getItem('username').substring(0,20)
 		if(!username){
 			username="anonymous"
@@ -93,16 +97,8 @@ let parseAuth = (msg)=>{
 	}
 }
 
-let blobInterface =(msg)=>{
-	if(typeof msg.data === 'object'){
-		reader.readAsText(msg.data)
-	}
-	else{
-		L3GBAAPIParsing(msg.data)
-	}
-}
 let L3GBAAPIParsing=(data)=>{
-	let code = data || reader.result
+	let code = data.data
 	switch(code[0]){
 		case "d":
 			keyState[keyList[reader.result[2]]][1] = 1
@@ -111,12 +107,10 @@ let L3GBAAPIParsing=(data)=>{
 			keyState[keyList[reader.result[2]]][1] = 0
 			break;
 		case "o":
-			setPauseMenu(true)
-			isSyncPause = true
+			setPauseMenu(true, false)
 			break;
 		case "f":
-			setPauseMenu(false)
-			isSyncPause = true
+			setPauseMenu(false, false)
 			break;
 		case "l":
 			let userArray = code.substring(2).split("~")
@@ -144,7 +138,6 @@ let L3GBAAPIParsing=(data)=>{
 	}
 }
 
-reader.addEventListener("load", L3GBAAPIParsing)
 socket.onopen = WSAuth
 socket.addEventListener("message",parseAuth);
 
