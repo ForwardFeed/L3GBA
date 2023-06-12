@@ -2,7 +2,6 @@
 
 let wsAdd = "ws://"+location.hostname+":9091"
 const socket = new WebSocket(wsAdd);
-var reader = new FileReader();
 var clientUsername = ""
 
 function onClickGo(){
@@ -101,10 +100,10 @@ let L3GBAAPIParsing=(data)=>{
 	let code = data.data
 	switch(code[0]){
 		case "d":
-			keyState[keyList[reader.result[2]]][1] = 1
+			keyState[keyList[code[1]]][1] = 1
 			break;
 		case "u":
-			keyState[keyList[reader.result[2]]][1] = 0
+			keyState[keyList[code[1]]][1] = 0
 			break;
 		case "o":
 			setPauseMenu(true, false)
@@ -114,7 +113,7 @@ let L3GBAAPIParsing=(data)=>{
 			break;
 		case "l":
 			let userArray = code.substring(2).split("~")
-			for(let i=0; i<userArray.length-1;i++){
+			for(let i=0; i<userArray.length;i++){
 				addUser(userArray[i], true)
 			}
 			break;

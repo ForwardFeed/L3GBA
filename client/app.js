@@ -69,7 +69,7 @@ var gbaHeight
 var cheatCode
 
 var isStarted = false
-
+var showMsgStop
 
 function processAudio(event) {
     var outputBuffer = event.outputBuffer
@@ -535,8 +535,7 @@ window.addEventListener("gamepadconnected", function (e) {
 });
 
 function processGamepadInput() {
-	return
-    if (currentConnectedGamepad < 0) {
+    if (currentConnectedGamepad < 0 || currentConnectedGamepad == undefined) {
         return
     }
     var gamepad = navigator.getGamepads()[currentConnectedGamepad]
@@ -667,12 +666,15 @@ function clearSaveBufState() {
 }
 
 
-function showMsg(msg) {
-    document.getElementById('msg-text').innerText = msg
-    document.getElementById('msg-layer').hidden = false
-    setTimeout(function () {
-        document.getElementById('msg-layer').hidden = true
-    }, 1000)
+function showMsg(msg, time) {
+    let timeShown = time || 1000
+    document.getElementById('notif-msg').innerText = msg
+    document.getElementById('notif').hidden = false
+    showMsgStop = setTimeout(function () {
+        document.getElementById('notif').hidden = true
+        //prevents messages from annoying each others.
+        clearTimeout(showMsgStop)
+    }, timeShown)
 }
 
 function setTurboMode(t) {

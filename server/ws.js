@@ -100,15 +100,18 @@ export function init(rooms){
 					var connectedUsers=""
 					rooms.getRoom(ws.room).aClients.forEach(function(client){
 						if(client==ws){
-							connectedUsers+=client.username+client.ready+"~"
-							return
+							
 						}
-						if(client.username==ws.username){
+						else if(client.username==ws.username){
 							number++
 							ws.username=msg.substring(2)+number
 							connectedUsers+=client.username+client.ready+"~"
+						}else{
+							connectedUsers+=client.username+client.ready+"~"
 						}
 					})
+					//then we append
+					connectedUsers+=ws.username+"0"
 					//so first tell the client about his username
 					ws.send("n_"+ws.username)
 					//tell others a new fren has joined and which is not ready

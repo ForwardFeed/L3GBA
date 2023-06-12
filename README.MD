@@ -37,3 +37,5 @@ feel free.
 - [ ] implement the input sync for the touchpad (not keyboards things)
 - [ ] i've removed some features like cheats that were bugging me, i need to reintroduce them
 - [ ] an https mode would be great.
+- [ ] answer and implement about "what to do if someone just joined in the middle of a game"
+- [ ] get average latency to compensate some actions for better sync.
