@@ -91,7 +91,7 @@ export function init(rooms){
 					wss.broadcast(data, ws)
 					break;
 				case "n":
-					ws.username=msg.substring(2)
+					ws.username=msg.substring(2).substring(0,20)
 					if(ws.username==undefined){
 						ws.username=="anonymUWUs"
 					}

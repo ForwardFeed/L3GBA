@@ -80,7 +80,7 @@ let parseAuth = (msg)=>{
 	if(data=="valid"){
 		socket.removeEventListener("message", parseAuth)
 		socket.addEventListener("message",blobInterface)
-		let username= localStorage.getItem('username')
+		let username= localStorage.getItem('username').substring(0,20)
 		if(!username){
 			username="anonymous"
 			localStorage.setItem('username', username)

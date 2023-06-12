@@ -15,7 +15,7 @@ export function init(rooms){
 	http.use(express.static('client'))
 	
 	http.post("/join_room", function(req, res) {
-		//!TODO SANITIZE
+		
 		let name = req.query.name.replace(/[^a-zA-Z0-9.-]/g);
 		let passwd = req.query.passwd.replace(/[^a-zA-Z0-9.-]/g);
 		if(name==undefined || passwd==undefined){
@@ -23,7 +23,11 @@ export function init(rooms){
 			//400
 			res.status(400);
 		}
-		if(! rooms.roomExist(name)){
+		else if(name.length > 20 || passwd.length >20){
+			//too big i refuse
+			res.status(400);
+		}
+		else if(! rooms.roomExist(name)){
 			//no room with this name
 			//404
 			res.status(404);
@@ -69,7 +73,11 @@ export function init(rooms){
 			res.send()
 			return
 		}
-		if(rooms.roomExist(name)){
+		if(name.length > 20 || passwd.length >20){
+			//too big i refuse
+			res.status(400);
+		}
+		else if(rooms.roomExist(name)){
 			//a room already exist with this name
 			//409
 			res.status(409);

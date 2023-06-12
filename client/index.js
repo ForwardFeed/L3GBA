@@ -2,7 +2,7 @@ function sanInput(input){
     if(!input){
         return ""
     }
-    return input.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
+    return input.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"").substring(0,20)
 }
 var errorFeedBack = document.getElementById("err-room")
 { //setup for room join

@@ -31,7 +31,9 @@ feel free.
 - [ ] a clean front end
 - [ ] an icon
 - [ ] do a thing about the DOS potential of the server and others ill-intended things
+    - [ ] rate limit the room creations
 - [ ] beta-testing to find bugs
 - [ ] maybe a more professionnal back end (logging, containers)
-- [ ] implement the imput sync for the touchpad (not keyboards things)
+- [ ] implement the input sync for the touchpad (not keyboards things)
 - [ ] i've removed some features like cheats that were bugging me, i need to reintroduce them
+- [ ] an https mode would be great.
