@@ -20,7 +20,7 @@ Hence the name **L3GBA** which is the final contraction of 3 legged GBA, a refer
 ## How to
 in case you're curious how that works, i haven't hosted any version anywhere so far for you to test it.
 it's just a nodejs project so git clone it, build it with ```npm init``` then ```npm run start``` to get it running.
-it runs on the port 9090 for the http and 9091 for the wasm but ofc it's just arbitrary. and about the hostname, 127.0.0.1 won't work if you're about to share it to others.
+it runs on the port 9090 for the http and 9091 for the websockets but ofc it's just arbitrary. and about the hostname, 127.0.0.1 won't work if you're about to share it to others.
 
 concerning the emulator/wasm part made by 44670, i've builded it myself then feed this project with the builded files and i don't plan in the near future to involve myself into it.
 

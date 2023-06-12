@@ -1,5 +1,6 @@
 ### Here is defined the WS API
-i mainly use the first char as recon because i find that cool
+i mainly use the first char as recon because it told to myself it's a good idea and sometimes i use the underscore as a useless
+delimiter too,
 
 | name         | string             | description                                                              | 
 |--------------|--------------------|--------------------------------------------------------------------------|

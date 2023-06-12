@@ -52,10 +52,6 @@ class L3GBAroom{
         }
         return false
     }
-    /*
-        ARG a client auth token
-        RETURN a room id which this token belong
-    */
     
 }
 
@@ -73,13 +69,6 @@ export class L3GBARoomList{
                 map.delete(key)
             }
         })
-        /*
-        for(let i=0;i<this.roomList.length;i++){
-            let room = this.roomList[i]
-            if(!room.onUse && room.hasExpired){
-                this.roomList.splice(i, 1)
-            }
-        }*/
     }
     /*
 
@@ -96,11 +85,7 @@ export class L3GBARoomList{
         }
         return s4()+s4()
     }
-    /*
-        name: name of the room
-        
-        return -1 or the room "id" (one may call it the room iterator)
-    */
+
     roomExist(name){
         return this.roomMap.has(name)
     }
@@ -152,8 +137,6 @@ export class L3GBARoomList{
     }
     createRoom(name, passwd){
         this.roomMap.set(name, new L3GBAroom(name, passwd))
-        //this.roomList.push(new L3GBAroom(name, passwd))
-        //return this.roomList.length-1
     }
 
     getRoom(name){

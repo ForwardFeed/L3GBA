@@ -55,7 +55,7 @@ export function init(rooms){
 			however this here has a high DOS potential 
 			if no middleware is to protect evil people from
 			creating endless rooms until the server dies.
-			i could aslo get trapped by someone tarpiting the ws :x
+			it could also get trapped by someone tarpiting the ws :x
 		*/
 		rooms.killInactiveRoom()
 
@@ -76,7 +76,6 @@ export function init(rooms){
 		}
 		else{
 			//original room name
-			//don't care about password being set or not
 			//201 a room has been created.
 			rooms.createRoom(name, passwd)
 			let auth_token = rooms.addAuthedClient(name)
