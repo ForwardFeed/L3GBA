@@ -152,8 +152,11 @@ function wasmReady() {
     idata = new ImageData(new Uint8ClampedArray(Module.HEAPU8.buffer).subarray(ptr, ptr + 240 * 160 * 4), 240, 160)
 
     isWasmReady = true
-    document.getElementById('wasm-loading').hidden = true
-    document.getElementById('select-rom').hidden = false
+    let romLoad = document.getElementById("rom-load")
+    romLoad.innerText="Load ROM"
+    romLoad.onclick=function(){
+        document.getElementById("romFile").click()
+    }
 }
 
 function loadSaveGame(index, cb) {
@@ -248,15 +251,16 @@ function loadRomArrayBuffer(arrayBuffer) {
     }     
     var ret = Module._emuLoadROM(u8.length)
     //now i can wait for the sync
-    let btnChoose = document.getElementById('btn-choose')
+    let btnChoose = document.getElementById('rom-load')
     btnChoose.classList.add("valid");
-    let btnSync = document.getElementById('btn-sync')
-    btnSync.hidden = false
+    btnChoose.innerText="Valid ROM"
+    let btnReady = document.getElementById('ready')
+    btnReady.hidden = false
     
 }
 
 function startEmulation(){
-	document.getElementById('welcome').hidden = true
+	document.getElementById('menu').hidden = true
 	document.getElementById('settings').hidden = false
     loadSaveGame(0, function () {
         Module._emuResetCpu()
@@ -685,9 +689,9 @@ function setTurboMode(t) {
 
 function setPauseMenu(t) {
 	if(t && !isSyncPause){
-		socket.send("pause_on")
+		socket.send("p_on")
 	}else if(!t  && !isSyncPause){
-		socket.send("pause_off")
+		socket.send("p_off")
 	}
 	isSyncPause=false
     if (!t) {
@@ -700,8 +704,8 @@ function setPauseMenu(t) {
     }
     t = t ? true : false
     isRunning = !t
-    document.getElementById('pause-menu').hidden = !t
-    document.getElementById('settings-icon').hidden = t
+    document.getElementById('menu').hidden = !t
+    document.getElementById('settings-btn').hidden = t
 }
 
 localforage.ready().then(function () { }).catch(function (err) {
@@ -751,3 +755,11 @@ function filterCheatCode(code) {
     }
     return ret
 }
+
+{   //leave the room
+    let leaveRoom = document.getElementById("leave")
+    leaveRoom.onclick=function(){
+        window.location.href="/"
+    }
+}
+
