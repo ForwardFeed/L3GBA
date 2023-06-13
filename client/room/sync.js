@@ -100,10 +100,10 @@ let L3GBAAPIParsing=(data)=>{
 	let code = data.data
 	switch(code[0]){
 		case "d":
-			keyState[keyList[code[1]]][1] = 1
+			inputs.setKeyState(Number(code[1]),1,1,false)
 			break;
 		case "u":
-			keyState[keyList[code[1]]][1] = 0
+			inputs.setKeyState(Number(code[1]),1,0,false)
 			break;
 		case "o":
 			setPauseMenu(true, false)

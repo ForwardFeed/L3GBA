@@ -23,12 +23,6 @@ if (isIOS) {
     }
 }
 
-
-var keyState = {
-};
-const keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
-const keymap = [88, 90, 16, 13, 39, 37, 38, 40, 87, 81] // z x shift enter right left up down w q
-
 const AUDIO_BLOCK_SIZE = 1024
 const AUDIO_FIFO_MAXLEN = 4900
 var audioContext
@@ -70,6 +64,9 @@ var cheatCode
 
 var isStarted = false
 var showMsgStop
+
+const inputs = new L3GBAInputs()
+inputs.init()
 
 function processAudio(event) {
     var outputBuffer = event.outputBuffer
@@ -321,7 +318,7 @@ function onFileSelected() {
 
 
 function emuRunFrame() {
-    processGamepadInput()
+    inputs.processGamepadInput()
     if (isRunning) {
         frameCnt++
         if (frameCnt % 60 == 0) {
@@ -342,7 +339,7 @@ function emuRunFrame() {
 
         }
         lastFrameTime = performance.now()
-        Module._emuRunFrame(getVKState());
+        Module._emuRunFrame(inputs.getVKState());
         drawContext.putImageData(idata, 0, 0);
     }
 }
@@ -354,83 +351,6 @@ function emuLoop() {
 }
 emuLoop()
 
-
-
-function initVK() {
-    var vks = document.getElementsByClassName('vk')
-    for (var i = 0; i < vks.length; i++) {
-        var vk = vks[i]
-        var k = vks[i].getAttribute('data-k')
-        keyState[k] = [vk, 0, 0]
-    }
-}
-initVK()
-
-function makeVKStyle(top, left, w, h, fontSize) {
-    return 'top:' + top + 'px;left:' + left + 'px;width:' + w + 'px;height:' + h + 'px;' + 'font-size:' + fontSize + 'px;line-height:' + h + 'px;'
-}
-
-
-function adjustVKLayout() {
-    var isLandscape = window.innerWidth > window.innerHeight
-    var baseSize = Math.min(Math.min(window.innerWidth, window.innerHeight) * 0.14, 50)
-    var fontSize = baseSize * 0.7
-    var offTop = 0
-    var offLeft = 0
-
-    if (!isLandscape) {
-        offTop = gbaHeight + baseSize
-        if ((offTop + baseSize * 7) > window.innerHeight) {
-            offTop = 0
-        }
-    }
-
-    var vkw = baseSize * 3
-    var vkh = baseSize
-
-    keyState['l'][0].style = makeVKStyle(offTop + baseSize * 1.5, 0, vkw, vkh, fontSize)
-    keyState['r'][0].style = makeVKStyle(offTop + baseSize * 1.5, window.innerWidth - vkw, vkw, vkh, fontSize)
-
-    vkh = baseSize * 0.5
-    //keyState['turbo'][0].style = makeVKStyle(offTop + baseSize * 0.5, 0, vkw, vkh, fontSize)
-    keyState['menu'][0].style = makeVKStyle(offTop + baseSize * 0.5, window.innerWidth - vkw, vkw, vkh, fontSize)
-
-    vkh = baseSize
-    vkw = baseSize
-    offTop += baseSize * 3
-    /*
-    offLeft = isLandscape ? (baseSize * 1) : 0
-    if (baseSize * 6 > window.innerWidth) {
-        offLeft = 0
-    }*/
-    offLeft = 0
-
-    keyState['up'][0].style = makeVKStyle(offTop, offLeft + vkw, vkw, vkh, fontSize)
-    keyState['ul'][0].style = makeVKStyle(offTop, offLeft, vkw, vkh, fontSize)
-    keyState['ur'][0].style = makeVKStyle(offTop, offLeft + vkw * 2, vkw, vkh, fontSize)
-    keyState['down'][0].style = makeVKStyle(offTop + vkh * 2, offLeft + vkw, vkw, vkh, fontSize)
-    keyState['dl'][0].style = makeVKStyle(offTop + vkh * 2, offLeft, vkw, vkh, fontSize)
-    keyState['dr'][0].style = makeVKStyle(offTop + vkh * 2, offLeft + vkw * 2, vkw, vkh, fontSize)
-    keyState['left'][0].style = makeVKStyle(offTop + vkh, offLeft + 0, vkw, vkh, fontSize)
-    keyState['right'][0].style = makeVKStyle(offTop + vkh, offLeft + vkw * 2, vkw, vkh, fontSize)
-    abSize = vkw * 1.3
-    keyState['a'][0].style = makeVKStyle(offTop + vkh - baseSize * 0.5, window.innerWidth - abSize, abSize, abSize, fontSize)
-    keyState['b'][0].style = makeVKStyle(offTop + vkh, window.innerWidth - abSize * 2.4, abSize, abSize, fontSize)
-
-    vkh = baseSize * 0.5
-    vkw = baseSize * 3
-
-    offLeft = (window.innerWidth - vkw * 2.2) / 2
-    offTop += baseSize * 3 + baseSize * 0.5
-    if (isLandscape) {
-        offTop = window.innerHeight - vkh
-    }
-
-    keyState['select'][0].style = makeVKStyle(offTop, offLeft, vkw, vkh, fontSize)
-    keyState['start'][0].style = makeVKStyle(offTop, offLeft + vkw * 1.2, vkw, vkh, fontSize)
-
-
-}
 
 function adjustSize() {
     var gbaMaxWidth = window.innerWidth
@@ -447,7 +367,7 @@ function adjustSize() {
     gbaHeight = 160 * scaleFator
     l += (window.innerWidth - gbaWidth) / 2;
     canvas.style = 'width:' + gbaWidth + 'px;height:' + gbaHeight + 'px;left:' + l + 'px;'
-    adjustVKLayout()
+    inputs.adjustVKLayout()
 }
 
 window.onresize = adjustSize
@@ -455,217 +375,6 @@ window.onorientationchange = adjustSize
 adjustSize()
 
 
-function handleTouch(event) {
-    tryInitSound()
-    if (!isRunning) {
-        return
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    document.getElementById('vk-layer').hidden = false
-    for (var k in keyState) {
-        if(keyState[k][2]!=0){
-            socket.send("u"+k)
-        }
-        keyState[k][2] = 0
-        
-    }
-    for (var i = 0; i < event.touches.length; i++) {
-        var t = event.touches[i];
-        var dom = document.elementFromPoint(t.clientX, t.clientY)
-        if (dom) {
-            var k = dom.getAttribute('data-k')
-            if (k) {
-                keyState[k][2] = 1
-                if (k == 'ul') {
-                    keyState['up'][2] = 1
-                    socket.send("d"+6)
-                    keyState['left'][2] = 1
-                    socket.send("d"+5)
-                } else if (k == 'ur') {
-                    keyState['up'][2] = 1
-                    socket.send("d"+6)
-                    keyState['right'][2] = 1
-                    socket.send("d"+4)
-                } else if (k == 'dl') {
-                    keyState['down'][2] = 1
-                    socket.send("d"+7)
-                    keyState['left'][2] = 1
-                    socket.send("d"+5)
-                } else if (k == 'dr') {
-                    keyState['down'][2] = 1
-                    socket.send("d"+7)
-                    keyState['right'][2] = 1
-                    socket.send("d"+4)
-                }
-            }
-        }
-    }
-    if (keyState['menu'][2]) {
-        setPauseMenu(true, true)
-    }
-    /*if (keyState['turbo'][2] != keyState['turbo'][1]) {
-        setTurboMode(keyState['turbo'][2])
-    }*/
-    for (var k in keyState) {
-        if (keyState[k][1] != keyState[k][2]) {
-            var dom = keyState[k][0]
-            keyState[k][1] = keyState[k][2]
-            if (keyState[k][1]) {
-                dom.classList.add('vk-touched')
-            } else {
-                dom.classList.remove('vk-touched')
-            }
-
-        }
-    }
-}
-
-
-var currentConnectedGamepad = -1
-var gamePadKeyMap = {
-    a: 1,
-    b: 0,
-    //x: 3,
-    //y: 2,
-    l: 4,
-    r: 5,
-    'select': 8,
-    'start': 9,
-    'up': 12,
-    'down': 13,
-    'left': 14,
-    'right': 15
-}
-
-window.addEventListener("gamepadconnected", function (e) {
-    console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-        e.gamepad.index, e.gamepad.id,
-        e.gamepad.buttons.length, e.gamepad.axes.length);
-    showMsg('Gamepad connected.')
-    currentConnectedGamepad = e.gamepad.index
-});
-
-function processGamepadInput() {
-    if (currentConnectedGamepad < 0 || currentConnectedGamepad == undefined) {
-        return
-    }
-    var gamepad = navigator.getGamepads()[currentConnectedGamepad]
-    if (!gamepad) {
-        showMsg('Gamepad disconnected.')
-        currentConnectedGamepad = -1
-        return
-    }
-    for (var k in keyState) {
-        
-        if(keyState[k][2]!=0){
-            socket.send("u"+k)
-        }
-        keyState[k][1] = 0
-        
-    }
-    for (var k in gamePadKeyMap) {
-        var btn = gamePadKeyMap[k]
-        if (gamepad.buttons[btn].pressed) {
-            keyState[k][1] = 1
-            socket.send("d"+k)
-        }
-    }
-    // Axes
-    if (gamepad.axes[0] < -0.5) {
-        keyState['left'][1] = 1
-        socket.send("d"+"5")
-    } else if (gamepad.axes[0] > 0.5) {
-        keyState['right'][1] = 1
-        socket.send("d"+"4")
-    }
-    if (gamepad.axes[1] < -0.5) {
-        keyState['up'][1] = 1
-        socket.send("d"+"6")
-    } else if (gamepad.axes[1] > 0.5) {
-        keyState['down'][1] = 1
-        socket.send("d"+"7")
-    }
-}
-
-
-/*
-        // dunno why, but we should do that first on iOS
-        window.ontouchstart = function() {
- 
-        };
-        window.ontouchstart = handleTouch;
-        window.ontouchmove = handleTouch;
-        window.ontouchcancel = handleTouch;
-        window.ontouchend = handleTouch;*/
-
-//'touchcancel', , 'touchforcechange'
-['touchstart', 'touchmove', 'touchend', 'touchcancel', 'touchenter', 'touchleave'].forEach((val) => {
-    window.addEventListener(val, handleTouch)
-})
-
-document.getElementById('vk-layer').ontouchstart = (e) => {
-    e.preventDefault()
-}
-
-
-
-function getVKState() {
-    var ret = 0;
-    for (var i = 0; i < 10; i++) {
-        ret = ret | (keyState[keyList[i]][1] << i);
-    }
-    return ret;
-}
-
-function convertKeyCode(keyCode) {
-    // const keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
-    //8bitdo Zero2 in Keyboard Mode
-    //const keymap2 = [71, 74, 78, 79, 70, 69, 67, 68, 77, 75]
-    for (var i = 0; i < 10; i++) {
-        if (keyCode == keymap[i]) {
-            return i
-        }
-    }
-    return -1
-}
-
-const normalKeyDown=(e)=>{
-    tryInitSound()
-    if (!isRunning) {
-        return
-    }
-    e.preventDefault()
-	
-    var k = convertKeyCode(e.keyCode)
-    if (k >= 0) {
-    	//now send this to the other client
-    	socket.send("d"+k)
-    	
-        keyState[keyList[k]][1] = 1
-    }
-}
-
-const normalKeyUp=(e)=> {
-    if (!isRunning) {
-        return
-    }
-    e.preventDefault()
-    var k = convertKeyCode(e.keyCode)
-    if (k >= 0) {
-    	//now send this to the other client too
-    	socket.send("u"+k)
-    	
-        keyState[keyList[k]][1] = 0
-    }
-    if (e.keyCode == 27) {
-        setPauseMenu(true, true)
-    }
-}
-
-document.onkeydown = normalKeyDown
-
-document.onkeyup = normalKeyUp
 
 function checkSaveBufState() {
     if (!isRunning) {
@@ -782,6 +491,8 @@ function filterCheatCode(code) {
     }
     return ret
 }
+
+
 
 {   //leave the room
     let leaveRoom = document.getElementById("leave")
