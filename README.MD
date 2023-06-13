@@ -34,7 +34,9 @@ feel free.
     - [ ] rate limit the room creations
 - [ ] beta-testing to find bugs
 - [ ] maybe a more professionnal back end (logging, containers)
-- [ ] implement the input sync for the touchpad (not keyboards things)
+- [ ] implement the input sync for the touchpad & gamepad
+    - [ ] test gamepad
+    - [ ] test touchpad
 - [ ] i've removed some features like cheats that were bugging me, i need to reintroduce them
 - [ ] an https mode would be great.
 - [ ] answer and implement about "what to do if someone just joined in the middle of a game"
@@ -47,3 +49,4 @@ feel free.
 - [ ] server side config file
 - [ ] add warning for unsupported harware on the main page.
 - [ ] replace all deprecated function
+- [ ] notify if clients aren't using the same file

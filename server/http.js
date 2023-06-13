@@ -50,7 +50,7 @@ export function init(rooms){
 	})
 
 	http.get("/room", function(req, res) {
-		res.sendFile(__dirname+"/client/room.html")
+		res.sendFile(__dirname+"/client/room/room.html")
 	})
 
 	http.post("/create_room", function(req, res) {
