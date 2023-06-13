@@ -38,4 +38,12 @@ feel free.
 - [ ] i've removed some features like cheats that were bugging me, i need to reintroduce them
 - [ ] an https mode would be great.
 - [ ] answer and implement about "what to do if someone just joined in the middle of a game"
-- [ ] get average latency to compensate some actions for better sync.
+- [ ] get average latency to compensate some actions for better sync, maybe the latency of all clients
+    - [ ] make it with an hearbeat function in case on client is freezing or something?
+- [ ] prevent the player to missclick into leaving the room
+- [ ] checkbox to tell the player to pause if one player got disconnected
+- [ ] a force resync where one player share its gamestate (384 kb i believe)
+- [ ] sharing savefiles (max: 512kb )
+- [ ] server side config file
+- [ ] add warning for unsupported harware on the main page.
+- [ ] replace all deprecated function

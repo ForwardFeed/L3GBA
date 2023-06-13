@@ -125,9 +125,9 @@ function tryInitSound() {
 
 function writeAudio(ptr, frames) {
     //console.log(ptr, frames)
-    if (turboMode) {
+    /*if (turboMode) {
         return
-    }
+    }*/
     if (!wasmAudioBuf) {
         wasmAudioBuf = new Int16Array(Module.HEAPU8.buffer).subarray(ptr / 2, ptr / 2 + 2048)
     }
@@ -392,7 +392,7 @@ function adjustVKLayout() {
     keyState['r'][0].style = makeVKStyle(offTop + baseSize * 1.5, window.innerWidth - vkw, vkw, vkh, fontSize)
 
     vkh = baseSize * 0.5
-    keyState['turbo'][0].style = makeVKStyle(offTop + baseSize * 0.5, 0, vkw, vkh, fontSize)
+    //keyState['turbo'][0].style = makeVKStyle(offTop + baseSize * 0.5, 0, vkw, vkh, fontSize)
     keyState['menu'][0].style = makeVKStyle(offTop + baseSize * 0.5, window.innerWidth - vkw, vkw, vkh, fontSize)
 
     vkh = baseSize
@@ -464,7 +464,11 @@ function handleTouch(event) {
     event.stopPropagation();
     document.getElementById('vk-layer').hidden = false
     for (var k in keyState) {
+        if(keyState[k][2]!=0){
+            socket.send("u"+k)
+        }
         keyState[k][2] = 0
+        
     }
     for (var i = 0; i < event.touches.length; i++) {
         var t = event.touches[i];
@@ -475,16 +479,24 @@ function handleTouch(event) {
                 keyState[k][2] = 1
                 if (k == 'ul') {
                     keyState['up'][2] = 1
+                    socket.send("d"+6)
                     keyState['left'][2] = 1
+                    socket.send("d"+5)
                 } else if (k == 'ur') {
                     keyState['up'][2] = 1
+                    socket.send("d"+6)
                     keyState['right'][2] = 1
+                    socket.send("d"+4)
                 } else if (k == 'dl') {
                     keyState['down'][2] = 1
+                    socket.send("d"+7)
                     keyState['left'][2] = 1
+                    socket.send("d"+5)
                 } else if (k == 'dr') {
                     keyState['down'][2] = 1
+                    socket.send("d"+7)
                     keyState['right'][2] = 1
+                    socket.send("d"+4)
                 }
             }
         }
@@ -492,9 +504,9 @@ function handleTouch(event) {
     if (keyState['menu'][2]) {
         setPauseMenu(true, true)
     }
-    if (keyState['turbo'][2] != keyState['turbo'][1]) {
+    /*if (keyState['turbo'][2] != keyState['turbo'][1]) {
         setTurboMode(keyState['turbo'][2])
-    }
+    }*/
     for (var k in keyState) {
         if (keyState[k][1] != keyState[k][2]) {
             var dom = keyState[k][0]
@@ -545,24 +557,34 @@ function processGamepadInput() {
         return
     }
     for (var k in keyState) {
+        
+        if(keyState[k][2]!=0){
+            socket.send("u"+k)
+        }
         keyState[k][1] = 0
+        
     }
     for (var k in gamePadKeyMap) {
         var btn = gamePadKeyMap[k]
         if (gamepad.buttons[btn].pressed) {
             keyState[k][1] = 1
+            socket.send("d"+k)
         }
     }
     // Axes
     if (gamepad.axes[0] < -0.5) {
         keyState['left'][1] = 1
+        socket.send("d"+"5")
     } else if (gamepad.axes[0] > 0.5) {
         keyState['right'][1] = 1
+        socket.send("d"+"4")
     }
     if (gamepad.axes[1] < -0.5) {
         keyState['up'][1] = 1
+        socket.send("d"+"6")
     } else if (gamepad.axes[1] > 0.5) {
         keyState['down'][1] = 1
+        socket.send("d"+"7")
     }
 }
 

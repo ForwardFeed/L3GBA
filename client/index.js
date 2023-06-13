@@ -91,5 +91,9 @@ var errorFeedBack = document.getElementById("err-room")
     node.oninput    = onInputSan
 }
 
+{ // hardware / software checking
+    
+}
+
 
 document.getElementById('username').value=localStorage.getItem('username')
