@@ -36,7 +36,7 @@ feel free.
 - [ ] maybe a more professionnal back end (logging, containers)
 - [ ] implement the input sync for the touchpad & gamepad
     - [ ] test gamepad
-    - [ ] test touchpad
+    - [x] test touchpad
 - [ ] feature reintroduction
     - [x] Cheats (untested)
     - [ ] turbo mode
@@ -45,11 +45,12 @@ feel free.
 - [ ] get average latency to compensate some actions for better sync, maybe the latency of all clients
     - [ ] make it with an hearbeat function in case on client is freezing or something?
 - [ ] prevent the player to missclick into leaving the room
-- [ ] checkbox to tell the player to pause if one player got disconnected
+- [ ] checkbox opt-in (or out) to pause if one player got disconnected
 - [ ] a force resync where one player share its gamestate (384 kb i believe)
 - [ ] sharing savefiles (max: 512kb )
 - [ ] server side config file
 - [ ] add warning for unsupported harware on the main page.
+    - [x] wasm
 - [ ] replace all deprecated function
     - [ ] audio -> AudioWorklet (requires https)
     - [ ] window.onorientationchange -> ScreenOrientation

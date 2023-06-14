@@ -50,7 +50,7 @@ class L3GBAInputs{
             this.keyState[k] = [vk, 0, 0]
         }
         ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'touchenter', 'touchleave'].forEach((val) => {
-            window.addEventListener(val, this.handleTouch)
+            window.addEventListener(val, (e)=>{this.handleTouch(e)})
         })
         
         document.getElementById('vk-layer').ontouchstart = (e) => {
@@ -108,11 +108,13 @@ class L3GBAInputs{
     }
     handleTouch(event){
         tryInitSound()
+        
         if (!isRunning) {
             return
         }
         event.preventDefault();
         event.stopPropagation();
+
         document.getElementById('vk-layer').hidden = false
         for (var k in this.keyState) {
             if(this.keyState[k][2]!=0){
@@ -120,9 +122,8 @@ class L3GBAInputs{
             }else{
                 this.setKeyState(k,2,0,false)
             }
-            
-            
         }
+        
         for (var i = 0; i < event.touches.length; i++) {
             var t = event.touches[i];
             var dom = document.elementFromPoint(t.clientX, t.clientY)
@@ -271,6 +272,31 @@ class L3GBAInputs{
         }
         return -1
     }
+    convertKeyString(keyString){
+        //["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
+        switch(keyString){
+            case "a":
+                return 0
+            case "b":
+                return 1
+            case "select":
+                return 2
+            case "start":
+                return 3
+            case "right":
+                return 4
+            case "left":
+                return 5
+            case "up":
+                return 6
+            case "down":
+                return 7
+            case "r":
+                return 8
+            case "l":
+                return 9
+        }
+    }
     /*
     @k could be -1<int<11 or string 'left', 'top' 'a'
     @index index of the keystate array
@@ -289,6 +315,7 @@ class L3GBAInputs{
             
         }else if(typeof k == 'string'){
             this.keyState[k][index] = value
+            k = this.convertKeyString(k)
         }else{
             //wtf
             console.warn("who just sent an object as k, are you mad?")
