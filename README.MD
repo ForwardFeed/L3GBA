@@ -27,27 +27,30 @@ concerning the emulator/wasm part made by 44670, i've builded it myself then fee
 feel free.
 
 ## TODO LIST
-- [ ] a clean front end
+- [ ] improvement front end
+    - [x] index.html
+    - [ ] room.html
 - [ ] an icon
-- [ ] do a thing about the DOS potential of the server and others ill-intended things
+- [ ] Security
     - [ ] rate limit the room creations
-- [ ] beta-testing to find bugs
-- [ ] maybe a more professionnal back end (logging, containers)
+- [ ] a more professionnal back end (logging, containers)?
+- [ ] heartbeat to disconnect any freezing client?
+- [ ] server side config file
 - [ ] implement the input sync for the touchpad & gamepad
     - [ ] test gamepad
     - [x] test touchpad
 - [ ] feature reintroduction
     - [x] Cheats (untested)
     - [ ] turbo mode
-- [ ] an https mode would be great.
+- [ ] an https mode?
 - [ ] answer and implement about "what to do if someone just joined in the middle of a game"
-- [ ] get average latency to compensate some actions for better sync, maybe the latency of all clients
-    - [ ] make it with an hearbeat function in case on client is freezing or something?
-- [ ] prevent the player to missclick into leaving the room
-- [ ] checkbox opt-in (or out) to pause if one player got disconnected
-- [ ] a force resync where one player share its gamestate (384 kb i believe)
-- [ ] sharing savefiles (max: 512kb )
-- [ ] server side config file
+- [ ] room settings
+    - [ ] pause on disconnect/reconnect
+    - [ ] lag input for sync improvement
+- [ ] room features
+    - [ ] a force resync where one player share its gamestate (384 kb i believe)
+    - [ ] sharing savefiles (max: 512kb )
+    - [ ] prevent the player to missclick into leaving the room
 - [ ] add warning for unsupported harware on the main page.
     - [x] wasm
 - [ ] replace all deprecated function
