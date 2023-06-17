@@ -11,6 +11,8 @@ html {
     height: 100%;
     width: 100%;
     font-family: 'Myriad Set Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #fdfdfd;
 }
 
 body {
@@ -34,6 +36,7 @@ header {
 header>h1 {
     width: fit-content;
     margin: 0;
+    color: #000000;
 }
 
 label {
@@ -46,6 +49,8 @@ label {
 
 button {
     border-color: #010105;
+    font-weight: bold;
+    color: #e7e4e0
 }
 
 input {
@@ -62,6 +67,8 @@ footer {
     padding-left: 5%;
     padding-right: 5%;
     height: 50px;
+    font-weight: normal;
+    color: black;
 }
 
 .user-bar {
@@ -93,11 +100,17 @@ footer {
 .join-room-div {
     display: flex;
     flex-direction: column;
+    box-shadow: 4px 9px 50px 2px rgba(15,58,54,0.79);
+    -webkit-box-shadow: 4px 9px 50px 2px rgba(15,58,54,0.79);
+    -moz-box-shadow: 4px 9px 50px 2px rgba(15,58,54,0.79);
 }
 
 .create-room-div {
     display: flex;
     flex-direction: column;
+    box-shadow: 4px 9px 50px 2px rgba(15,58,54,0.79);
+    -webkit-box-shadow: 4px 9px 50px 2px rgba(15,58,54,0.79);
+    -moz-box-shadow: 4px 9px 50px 2px rgba(15,58,54,0.79);
 }
 
 .create-room-div>button {
@@ -118,7 +131,6 @@ footer {
     margin-right: 5%;
     display: flex;
     height: 60%;
-    box-shadow: 10px 5px 5px #0f3a36;
     background-color: #0f3a36;
 }
 
@@ -131,8 +143,8 @@ footer {
 #tabs-content {
     width: 100%;
     padding-left: 2%;
-    background-color: #77e2d7;
     border-color: #010105;
+    background-color: #2a697c;
     border-width: 1px;
     border-style: solid;
     border-left: none;

@@ -19,7 +19,7 @@ Hence the name **L3GBA** which is the final contraction of 3 legged GBA, is a re
 ## How to
 in case you're curious how that works, i haven't hosted any version anywhere so far for you to test it.
 it's just a nodejs project so git clone it, build it with ```npm init``` then ```npm run start``` to get it running.
-it runs on the port 9090 for the http and 9091 for the websockets but ofc it's just arbitrary. and about the hostname, 127.0.0.1 won't work if you're about to share it to others.
+it runs on the port 9090 for the http and 9091 for the websockets but ofc it's just arbitrary. and about the hostname, 127.0.0.1 won't work if you're about to share it to internet.
 
 concerning the emulator/wasm part made by 44670, i've builded it myself then feed this project with the builded files but i don't plan in the near future to involve myself more into it.
 
@@ -29,24 +29,28 @@ feel free.
 ## TODO LIST
 - [ ] improvement front end
     - [x] index.html
+    - [ ] index.html (less opinionated colors)
     - [ ] room.html
-- [ ] an icon
+    - [ ] room.html (less opinionated colors)
+    - [ ] an icon
 - [ ] Security
     - [ ] rate limit the room creations
-- [ ] a more professionnal back end (logging, containers)?
-- [ ] heartbeat to disconnect any freezing client?
-- [ ] server side config file
-- [ ] implement the input sync for the touchpad & gamepad
+- [ ] ServerSide
+    - [ ] a more professionnal back end (logging, containers)?
+    - [ ] heartbeat to disconnect any freezing client?
+    - [ ] config file (hostname)
+    - [ ] an https mode?
+- [ ] porting for other than keyboards
     - [ ] test gamepad
     - [x] test touchpad
 - [ ] feature reintroduction
     - [x] Cheats (untested)
     - [ ] turbo mode
-- [ ] an https mode?
-- [ ] answer and implement about "what to do if someone just joined in the middle of a game"
 - [ ] room settings
     - [ ] pause on disconnect/reconnect
     - [ ] lag input for sync improvement
+    - [ ] notify if clients aren't using the same file
+    - [ ] answer and implement about "what to do if someone just joined in the middle of a game"
 - [ ] room features
     - [ ] a force resync where one player share its gamestate (384 kb i believe)
     - [ ] sharing savefiles (max: 512kb )
@@ -57,4 +61,3 @@ feel free.
     - [ ] audio -> AudioWorklet (requires https)
     - [ ] window.onorientationchange -> ScreenOrientation
     - [x] navigator.plateform won't be changed due to its replacement being "meh"
-- [ ] notify if clients aren't using the same file
