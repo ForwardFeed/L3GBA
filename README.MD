@@ -47,6 +47,7 @@ feel free.
     - [x] Cheats (untested)
     - [ ] turbo mode
 - [ ] room settings
+    - [ ] set a tooltip
     - [ ] pause on disconnect/reconnect
     - [ ] lag input for sync improvement
     - [ ] notify if clients aren't using the same file
