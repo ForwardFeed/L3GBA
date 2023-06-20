@@ -1,7 +1,7 @@
 var ex_tab //existent tab
 {   
     let light = "#2a697c"
-    let dark = "#1D6F75"
+    let dark = "#485859"
 
     let div = document.getElementById('tabs-buttons')
     let contDiv=document.getElementById('tabs-content')

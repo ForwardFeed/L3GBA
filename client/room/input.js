@@ -354,7 +354,7 @@ class L3GBAInputs{
     hookKey(e){
         this.keymap[this.keyChange]=e.keyCode
         showMsg("key choosed: "+e.key)
-        saveKeys()
+        this.saveConfig()
         document.onkeydown = (e)=>{this.normalKeyDown(e)}
         document.onkeyup = (e)=>{this.normalKeyUp(e)}
     }
@@ -396,6 +396,7 @@ class L3GBAInputs{
         default:
             return
         }
+        this.keyChange=keyChange
         document.onkeydown = (e)=>{this.hookKey(e)}
         document.onkeyup = ""
     }

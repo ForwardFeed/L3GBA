@@ -1,7 +1,7 @@
 
 
 html {
-    background-color: #40E0D0;
+    background-color: #152221;
     height: 100%;
     width: 100%;
     font-family: 'Myriad Set Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -62,7 +62,7 @@ footer {
     padding-right: 5%;
     height: 50px;
     font-weight: normal;
-    color: black;
+    color: white;
 }
 
 .user-bar {
@@ -125,7 +125,7 @@ footer {
     margin-right: 5%;
     display: flex;
     height: 60%;
-    background-color: #0f3a36;
+    background-color: #000000;
 }
 
 #tabs-buttons {
@@ -156,6 +156,6 @@ footer {
     border-radius: 10% 0% 0% 10%;
     border-right: none;
     border-width: 1px;
-    background-color: #1D6F75;
+    background-color: #485859;
     font-size: medium;
 }

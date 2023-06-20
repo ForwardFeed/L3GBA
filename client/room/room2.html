@@ -47,10 +47,22 @@
             
             
             <div class="save-div">
-                <h1>Save</h1>
-                <button onclick="savBackupBtn()">Backup</button>
-                <input type="file" id="sav-file" onchange="savRestoreBtn()" hidden>
-                <button onclick="$id('sav-file').click()">Restore</button>
+                <div class="save-header">
+                    <div class="save-title">Saves</div>
+                    <div class="save-legend">Local</div>
+                    <div class="save-legend">Multiplayer</div>
+                </div>
+                <div class="save-body">
+                    <div class="save-half-body">
+                        <button onclick="savBackupBtn()">Set backup</button>
+                        <input type="file" id="sav-file" onchange="savRestoreBtn()" hidden>
+                        <button onclick="$id('sav-file').click()">Restore backup</button>
+                    </div>
+                    <div class="save-half-body">
+                        
+                    </div>
+                </div>
+                
             </div>
             <div class="keybind settings">
                 Keybind settings:<br>
