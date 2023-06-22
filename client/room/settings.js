@@ -10,7 +10,9 @@
     checkbox=>0(uncheck) | 1(checked)
 
 */
-
+var roomSettings=[
+    0,0,0
+]
 
 function parseSettings(msg){
     switch(msg[0]){
@@ -18,7 +20,12 @@ function parseSettings(msg){
 
         break;
         case "1":
-
+            var checkbox = document.getElementById("setpauseonjoin")
+            if(msg[1]=="1"){
+                checkbox.checked=true
+            }else{
+                checkbox.checked=false
+            }
         break;
         case "2":
             var checkbox = document.getElementById("setpauseondisc")
@@ -36,18 +43,28 @@ function parseAllSettings(msg){
     let setsArray = msg.split("~")
     for(let i=0; i<setsArray.length-1;i++){
         parseSettings(setsArray[i])
+        roomSettings[i]=setsArray[i][1]
     }
 }
 
 function initCheckBoxes(){
-    let pauseondisc = document.getElementById("setpauseondisc")
-    pauseondisc.onchange=(ev)=>{
+    let box = document.getElementById("setpauseonjoin")
+    box.onchange=(ev)=>{
+        if(ev.target.checked){
+            socket.send("x_11")
+        }else{
+            socket.send("x_10")
+        }
+    }
+    box = document.getElementById("setpauseondisc")
+    box.onchange=(ev)=>{
         if(ev.target.checked){
             socket.send("x_21")
         }else{
             socket.send("x_20")
         }
     }
+    
 }
 
 initCheckBoxes()

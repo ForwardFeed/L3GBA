@@ -136,9 +136,16 @@ let L3GBAAPIParsing=(data)=>{
 			break;
 		case "q":
 			addUser(code.substring(2), false)
+			console.log(roomSettings)
+			if(roomSettings[2]==1){
+				setPauseMenu(true, false)
+			}
 			break;
 		case "j":
 			addUser(code.substring(2)+"0", true)
+			if(roomSettings[1]==1){
+				setPauseMenu(true, false)
+			}
 			break;
 		case "n":
 			clientUsername=code.substring(2)
