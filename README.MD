@@ -36,6 +36,7 @@ feel free.
 - [ ] Security
     - [ ] rate limit the room creations
 - [ ] ServerSide
+    - [ ] prevent spamming key (when holding down)
     - [ ] a more professionnal back end (logging, containers)?
     - [ ] heartbeat to disconnect any freezing client?
     - [ ] config file (hostname)
