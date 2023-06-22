@@ -3,7 +3,9 @@ class L3GBAroom{
         this.idList=new Array()//token list
         this.name=name
         this.passwd=passwd
-
+        this.roomSettings=[
+            0,0,0,  //for more infos check the client side settings.js file
+        ]
         
         this.lastActive=Date.now()
         this.emptyTTL=60000//empty time to live in millis
@@ -51,6 +53,14 @@ class L3GBAroom{
             }
         }
         return false
+    }
+
+    getRoomSettings(){
+        return this.roomSettings
+    }
+
+    updateRoomSettings(index, value){
+        this.roomSettings[index]=value
     }
     
 }

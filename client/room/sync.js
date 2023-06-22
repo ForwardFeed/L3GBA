@@ -105,6 +105,7 @@ let parseAuth = (msg)=>{
 			localStorage.setItem('username', username)
 		}
 		socket.send("n_"+username)
+		socket.send("a")
 	}else if(data=="invalid"){
 		window.location.href="/"
 	}else{
@@ -149,7 +150,10 @@ let L3GBAAPIParsing=(data)=>{
 			startEmulation()
 			break
 		case "x":
-			parseSettings(code)
+			parseSettings(code.substring(2))
+			break;
+		case "a":
+			parseAllSettings(code.substring(2))
 			break;
 		default:
 			console.warn("API wise unknown server message %s",code)

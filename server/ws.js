@@ -136,7 +136,16 @@ export function init(rooms){
 					}
 					break;
 				case "x":
+					ws.room.updateRoomSettings(msg[2], msg[3])
 					wss.broadcast(msg, ws)
+					break;
+				case "a":
+					var settings = ws.room.getRoomSettings()
+					var retMsg = "a_"
+					for(let i=0;i<settings.length;i++){
+						retMsg+=""+i+settings[i]+"~"
+					}
+					ws.send(retMsg)
 					break;
 				default:
 					console.warn("API wise unknown client message %s", data)

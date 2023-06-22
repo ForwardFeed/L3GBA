@@ -13,13 +13,16 @@
 
 
 function parseSettings(msg){
-    switch(msg[2]){
+    switch(msg[0]){
+        case "0":
+
+        break;
         case "1":
 
         break;
         case "2":
             var checkbox = document.getElementById("setpauseondisc")
-            if(msg[3]=="1"){
+            if(msg[1]=="1"){
                 checkbox.checked=true
             }else{
                 checkbox.checked=false
@@ -27,6 +30,12 @@ function parseSettings(msg){
         break;
         default:
             console.warn("unknown settings ID: "+msg[2])
+    }
+}
+function parseAllSettings(msg){
+    let setsArray = msg.split("~")
+    for(let i=0; i<setsArray.length-1;i++){
+        parseSettings(setsArray[i])
     }
 }
 

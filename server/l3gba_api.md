@@ -15,7 +15,7 @@ delimiter too,
 | readyness    | r**X**             | **X** is boolean to tell if ready or not                                 |
 | start        | s                  | all clients are ready, thus game can start, a client is fireing the go   |
 | settings     | x_**X****XYZ**     | share the room settings **X** with value **XYZ** between each clients    |
-| all settings | y_**X****XYZ**     | share the room settings **X** with value **XYZ** between each clients    |
+| all settings | a_**X****XYZ**#s   | client ask for the room settings                                         |
 
 | name         | server sent?| client sent?|
 |--------------|-------------|-------------|
@@ -30,3 +30,4 @@ delimiter too,
 | readyness    | yes         | yes         |
 | start        | yes         | yes         |
 | settings     | yes         | yes         |
+| all settings | yes         | yes         |
