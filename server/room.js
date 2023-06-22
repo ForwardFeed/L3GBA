@@ -124,15 +124,14 @@ export class L3GBARoomList{
         if(!ws){
             return
         }
-        let room = this.roomMap.get(ws.room)
-        if(!room){
-            console.error("no room named", ws.room)
+        if(!ws.room){
+            console.error("no room for client", ws)
             return
         }
         if(flag){
-            room.addActiveClient(ws)
+            ws.room.addActiveClient(ws)
         }else{
-            room.removeActiveClient(ws)
+            ws.room.removeActiveClient(ws)
         }
     }
     createRoom(name, passwd){

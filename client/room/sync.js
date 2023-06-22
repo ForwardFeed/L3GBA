@@ -13,19 +13,26 @@ function onClickGo(){
 var onClickReady = () =>{
 	let btn = document.getElementById("ready")
 	btn.innerHTML="click to unready"
-	socket.send("r_1")
-	btn.className="ready"
+	btn.classList.add("ready")
+	btn.classList.remove("unready")
 	btn.onclick=onClickUnready
-	document.getElementById("user-"+clientUsername).className="ready"
+	let user = document.getElementById("user-"+clientUsername)
+	user.classList.add("ready")
+	user.classList.remove("unready")
+	socket.send("r_1")
 	checkAllReady()
 }
 var onClickUnready = () =>{
 	let btn = document.getElementById("ready")
 	btn.innerHTML="click to ready"
-	socket.send("r_0")
-	btn.className="unready"
+	btn.classList.remove("ready")
+	btn.classList.add("unready")
 	btn.onclick=onClickReady
-	document.getElementById("user-"+clientUsername).className="unready"
+	let user = document.getElementById("user-"+clientUsername)
+	user.classList.remove("ready")
+	user.classList.add("unready")
+	socket.send("r_0")
+	document.getElementById("go").hidden=true
 }
 function addUser(username, flag){
 	let div = document.getElementById("users")
@@ -54,18 +61,18 @@ function setUserReady(username){
 	var name = username.substring(0,username.length-1)
 	if(flag==1){
 		document.getElementById("user-"+name).className="ready"
-		checkAllReady()
 	}else{
 		document.getElementById("user-"+name).className="unready"
-		return
 	}
+	checkAllReady()
 	
 }
 
 function checkAllReady(){
 	let users=document.getElementById("users")
-	for (let i=0;i<users.length;i++){
-		if(users[i].class=="unready"){
+	for (let i=0;i<users.children.length;i++){
+		if(users.children[i].classList.contains("unready")){
+			document.getElementById("go").hidden=true
 			return false
 		}
 	}
@@ -141,6 +148,9 @@ let L3GBAAPIParsing=(data)=>{
 		case "s":
 			startEmulation()
 			break
+		case "x":
+			parseSettings(code)
+			break;
 		default:
 			console.warn("API wise unknown server message %s",code)
 	}

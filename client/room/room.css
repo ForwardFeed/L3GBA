@@ -64,7 +64,7 @@ legend{
     width: 30%;
 }
 #select-rom>button{
-    width: 33%;
+    width: 33.33%;
     height: 100%;
     overflow-y: hidden;
 }
@@ -97,8 +97,6 @@ legend{
     position: relative;
 }
 
-.label-users{
-}
 #users{
     height: 10vw;
     width: 50vw;
@@ -183,9 +181,6 @@ legend{
 }
 .half-btn-set-key{
     width: 15%;
-}
-#cheats{
-    
 }
 #cheats>textarea{
     margin-right: 20%;

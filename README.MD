@@ -37,7 +37,7 @@ feel free.
     - [ ] prevent spamming key (when holding down)
     - [ ] a more professionnal back end (logging, containers)?
     - [ ] heartbeat to disconnect any freezing client?
-    - [ ] config file (hostname)
+    - [ ] config file (hostname, client cookie maxAge)
     - [ ] an https mode?
 - [ ] hardware porting
     - [ ] test gamepad
@@ -46,11 +46,11 @@ feel free.
     - [x] Cheats (untested)
     - [ ] turbo mode
 - [ ] room settings
-    - [ ] set a tooltip
+    - [ ] set a tooltip for room settings
     - [ ] pause on disconnect/reconnect
     - [ ] lag input for sync improvement
     - [ ] notify if clients aren't using the same file
-    - [ ] answer and implement about "what to do if someone just joined in the middle of a game"
+    - [ ] implement join in middle of active room
 - [ ] room features
     - [ ] a force resync where one player share its gamestate (384 kb i believe)
     - [ ] sharing savefiles (max: 512kb )

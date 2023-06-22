@@ -20,7 +20,7 @@ export function init(rooms){
 			console.warn("no sender given in broadcast function")
 			return
 		}
-		rooms.getRoom(sender.room).aClients.forEach(function(client){
+		sender.room.aClients.forEach(function(client){
 			if(client == sender){
 				return
 			}
@@ -51,7 +51,7 @@ export function init(rooms){
 				ws.on('message', L3GBAAPIParsing)
 				ws.auth=true
 				ws.ready=0
-				ws.room = parsed[0]
+				ws.room = rooms.getRoom(parsed[0])
 				ws.id = parsed[1]
 				ws.send("valid")
 				rooms.setActivityClient(ws, true)
@@ -98,7 +98,7 @@ export function init(rooms){
 					
 					var number = 0
 					var connectedUsers=""
-					rooms.getRoom(ws.room).aClients.forEach(function(client){
+					ws.room.aClients.forEach(function(client){
 						if(client==ws){
 							
 						}
@@ -125,7 +125,7 @@ export function init(rooms){
 					break;
 				case "s":
 					var isOneNotReady=false
-					rooms.getRoom(ws.room).aClients.forEach(function(client){
+					ws.room.aClients.forEach(function(client){
 						if(!client.ready){
 							isOneNotReady=true
 						}
@@ -134,6 +134,9 @@ export function init(rooms){
 						ws.send("s")
 						wss.broadcast("s", ws)
 					}
+					break;
+				case "x":
+					wss.broadcast(msg, ws)
 					break;
 				default:
 					console.warn("API wise unknown client message %s", data)

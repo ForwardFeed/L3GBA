@@ -88,7 +88,8 @@ export function init(rooms){
 			rooms.createRoom(name, passwd)
 			let auth_token = rooms.addAuthedClient(name)
 			// the user has less than 2 minutes to connect itself
-			res.cookie('token', auth_token, { maxAge: 120000, sameSite:true});
+			let age=1000*60*60*12
+			res.cookie('token', auth_token, { maxAge: age, sameSite:true});
 			res.status(201);
 		}
 		
