@@ -29,9 +29,7 @@ feel free.
 ## TODO LIST
 - [ ] improvement front end
     - [x] index.html
-    - [ ] index.html (less opinionated colors)
-    - [ ] room.html
-    - [ ] room.html (less opinionated colors)
+    - [x] room.html
     - [ ] an icon
 - [ ] Security
     - [ ] rate limit the room creations
@@ -41,7 +39,7 @@ feel free.
     - [ ] heartbeat to disconnect any freezing client?
     - [ ] config file (hostname)
     - [ ] an https mode?
-- [ ] porting for other than keyboards
+- [ ] hardware porting
     - [ ] test gamepad
     - [x] test touchpad
 - [ ] feature reintroduction
@@ -59,6 +57,7 @@ feel free.
     - [ ] prevent the player to missclick into leaving the room
 - [ ] add warning for unsupported harware on the main page.
     - [x] wasm
+    - [ ] gamepad
 - [ ] replace all deprecated function
     - [ ] audio -> AudioWorklet (requires https)
     - [ ] window.onorientationchange -> ScreenOrientation

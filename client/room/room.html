@@ -9,9 +9,9 @@
             <div class="top-buttons">
                 <div id="select-rom">
                     <input type="file" id="romFile" onchange="onFileSelected()" hidden />
-                    <button class="top-button" id="rom-load">Wait...</button>
-                    <button class="top-button" id="ready" onclick="onClickReady()" >Click to ready</button>
-                    <button class="top-button" id="go" onclick="onClickGo()" hidden>Click to start the game</button>
+                    <button class="top-button unready" id="rom-load">Wait...</button>
+                    <button class="top-button unready" id="ready" onclick="onClickReady()" hidden>Click to ready</button>
+                    <button class="top-button unready" id="go" onclick="onClickGo()" hidden>Click to start the game</button>
                 </div>
                 <div id="room-name">room test</div>
                 <button class="top-button" id="return">Return to game</button>
@@ -25,11 +25,11 @@
                     </div>      
                 </div>
                 <div id="room-settings">
-                    <div class="room-set">
+                    <div class="room-set" hidden>
                         <input type="checkbox" name="setpauseonjoin" id="setpauseonjoin" tooltip="if one player leave, instant pause for eveyone">
                         <label for="setpauseonjoin"> Set pause on join</label>
                     </div>
-                    <div class="room-set">
+                    <div class="room-set" hidden>
                         <input type="checkbox" name="setpauseondisc" id="setpauseondisc" tooltip="if one player leave, instant pause for eveyone">
                         <label for="setpauseondisc"> Set pause on disconnect</label>
                     </div>
@@ -68,11 +68,11 @@
                         <button class="btn-set-key" data-key="up">UP </button>
                         <button class="btn-set-key" data-key="b">B </button>
                         <button class="btn-set-key" data-key="left">LEFT</button>
-                        <button class="half-btn-set-key" data-key="l">L </button>
-                        <button class="half-btn-set-key" data-key="r">R </button>
+                        <button class="btn-set-key half-btn-set-key" data-key="l">L </button>
+                        <button class="btn-set-key half-btn-set-key" data-key="r">R </button>
                         <button class="btn-set-key" data-key="right">RIGHT </button>
-                        <button class="btn-set-key" data-key="dowb">DOWN </button>
                         <button class="btn-set-key" data-key="start">START </button>
+                        <button class="btn-set-key" data-key="down">DOWN </button>
                         <button class="btn-set-key" data-key="select">SELECT </button>   
                 </div>
             </div>
@@ -90,8 +90,7 @@
             </footer>
         </div>
         <button id="pause" hidden>
-            <div class="vk-rect vk" data-k="menu">Menu</div>
-            <!--<img src="../assets/settings.svg" alt="settings-button" width="24" height="24">-->
+            Menu
         </button>
         <div id="vk-layer" hidden>
             <div class="vk-rect vk" data-k="menu">Menu</div>

@@ -3,6 +3,7 @@ class L3GBAInputs{
         this.keyState={}
         this.keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
         this.keymap = [88, 90, 16, 13, 39, 37, 38, 40, 87, 81] // z x shift enter right left up down w q
+        this.keycodemap= ["z", "w", "shift","enter", "right","left","up","down", "x", "a" ]
         this.currentConnectedGamepad = -1
         this.gamePadKeyMap = {
             a: 1,
@@ -38,9 +39,18 @@ class L3GBAInputs{
         for(let i=0; i<keybinds.length;i++){
             this.keymap[i]=Number(keybinds[i])
         }
+        let keycodemap = localStorage.getItem('gba-keycodemap')
+        if(!keycodemap){
+            return
+        }
+        keycodemap = keycodemap.split(',')
+        for(let i=0; i<keycodemap.length;i++){
+            this.keycodemap[i]=keycodemap[i]
+        }
     }
     saveConfig(){
         localStorage.setItem('gba-keybinds', this.keymap)
+        localStorage.setItem('gba-keycodemap', this.keycodemap)
     }
     initVK() {
         var vks = document.getElementsByClassName('vk')
@@ -58,6 +68,7 @@ class L3GBAInputs{
         }
     }
     initKB(){
+        this.keymapButtons()
         document.onkeydown = (e)=>{this.normalKeyDown(e)}
         document.onkeyup = (e)=>{this.normalKeyUp(e)}
     }
@@ -353,16 +364,29 @@ class L3GBAInputs{
 
     hookKey(e){
         this.keymap[this.keyChange]=e.keyCode
-        showMsg("key choosed: "+e.key)
+        this.keycodemap[this.keyChange]=e.key
+        document.getElementById("kb-settings").children[0].innerText="Keybind settings"
         this.saveConfig()
+        this.keymapButtons()
         document.onkeydown = (e)=>{this.normalKeyDown(e)}
         document.onkeyup = (e)=>{this.normalKeyUp(e)}
     }
     
-    SetBtn(btn){
-        showMsg("click on a button on your keyboard to set it", 4000)
+    keymapButtons(){
+        let btnsKeyChange=document.getElementsByClassName("btn-set-key")
+        for(let i=0;i<btnsKeyChange.length;i++){
+            let btn=btnsKeyChange[i]
+            btn.onclick=(e)=>{this.setBtn(e)}
+            let regex= /\([^\(]+\)$/i
+            btn.innerText=btn.innerText.replace(regex,"")
+            let j = this.convertKeyString(btn.getAttribute("data-key"))
+            btn.innerText=btn.innerText+" ("+this.keycodemap[j]+")"
+        }
+    }
+    setBtn(ev){
+        document.getElementById("kb-settings").children[0].innerText="Press a key"
         var keyChange=-1
-        switch(btn){
+        switch(ev.target.getAttribute("data-key")){
         case 'a': 
         keyChange=0
         break;

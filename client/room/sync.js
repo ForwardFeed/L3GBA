@@ -5,11 +5,14 @@ const socket = new WebSocket(wsAdd);
 var clientUsername = ""
 
 function onClickGo(){
+	let btn = document.getElementById("go")
 	socket.send("s")
+	btn.innerText="reset emulator"
 }
 
 var onClickReady = () =>{
 	let btn = document.getElementById("ready")
+	btn.innerHTML="click to unready"
 	socket.send("r_1")
 	btn.className="ready"
 	btn.onclick=onClickUnready
@@ -18,6 +21,7 @@ var onClickReady = () =>{
 }
 var onClickUnready = () =>{
 	let btn = document.getElementById("ready")
+	btn.innerHTML="click to ready"
 	socket.send("r_0")
 	btn.className="unready"
 	btn.onclick=onClickReady
@@ -59,9 +63,14 @@ function setUserReady(username){
 }
 
 function checkAllReady(){
-	if(document.getElementsByClassName("unready").length==0){
-		document.getElementById("go").hidden=false
+	let users=document.getElementById("users")
+	for (let i=0;i<users.length;i++){
+		if(users[i].class=="unready"){
+			return false
+		}
 	}
+	document.getElementById("go").hidden=false
+	return true
 }
 
 function getCookie(cookiename) 
