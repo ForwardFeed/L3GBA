@@ -410,6 +410,7 @@ function showMsg(msg, time) {
 }
 
 function setTurboMode(t) {
+    console.log("turbo")
     t = t ? true : false
     if (turboMode == t) {
         return
@@ -419,6 +420,7 @@ function setTurboMode(t) {
     } else {
         clearInterval(turboInterval)
     }
+    
     turboMode = t
 }
 /*

@@ -1,9 +1,9 @@
 class L3GBAInputs{
     constructor(){
         this.keyState={}
-        this.keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
-        this.keymap = [88, 90, 16, 13, 39, 37, 38, 40, 87, 81] // z x shift enter right left up down w q
-        this.keycodemap= ["z", "w", "shift","enter", "right","left","up","down", "x", "a" ]
+        this.keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l', 'menu', 'turbo'];
+        this.keymap = [88, 90, 16, 13, 39, 37, 38, 40, 87, 81, 27, 84] // z x shift enter right left up down w q
+        this.keycodemap= ["z", "w", "shift","enter", "right","left","up","down", "x", "a" ,"Escape", "t"]
         this.currentConnectedGamepad = -1
         this.gamePadKeyMap = {
             a: 1,
@@ -162,9 +162,9 @@ class L3GBAInputs{
         if (this.keyState['menu'][2]) {
             setPauseMenu(true, true)
         }
-        /*if (this.keyState['turbo'][2] != this.keyState['turbo'][1]) {
+        if (this.keyState['turbo'][2] != this.keyState['turbo'][1]) {
             setTurboMode(this.keyState['turbo'][2])
-        }*/
+        }
         for (var k in this.keyState) {
             if (this.keyState[k][1] != this.keyState[k][2]) {
                 var dom = this.keyState[k][0]
@@ -212,7 +212,7 @@ class L3GBAInputs{
         this.keyState['r'][0].style =  this.makeVKStyle(offTop + baseSize * 1.5, window.innerWidth - vkw, vkw, vkh, fontSize)
     
         vkh = baseSize * 0.5
-        //keyState['turbo'][0].style =  this.makeVKStyle(offTop + baseSize * 0.5, 0, vkw, vkh, fontSize)
+        this.keyState['turbo'][0].style =  this.makeVKStyle(offTop + baseSize * 0.5, 0, vkw, vkh, fontSize)
         this.keyState['menu'][0].style =  this.makeVKStyle(offTop + baseSize * 0.5, window.innerWidth - vkw, vkw, vkh, fontSize)
     
         vkh = baseSize
@@ -266,17 +266,16 @@ class L3GBAInputs{
             console.warn("bad input broadcast DoU:",downOrUp)
             return
         }
-        if(k<0||k>10){
+        if(k<0||k>12){
             console.warn("bad input broadcast k:", k)
         }
         socket.send(DoU+k)
     }
 
     convertKeyCode(keyCode) {
-        // const keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
+        // const keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l', 'menu', 'turbo'];
         //8bitdo Zero2 in Keyboard Mode
-        //const keymap2 = [71, 74, 78, 79, 70, 69, 67, 68, 77, 75]
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < this.keymap.length; i++) {
             if (keyCode == this.keymap[i]) {
                 return i
             }
@@ -306,6 +305,10 @@ class L3GBAInputs{
                 return 8
             case "l":
                 return 9
+            case "menu":
+                return 10
+            case "turbo":
+                return 11
         }
     }
     /*
@@ -316,15 +319,29 @@ class L3GBAInputs{
 
     */
     setKeyState(k, index, value, flag){
+        console.log(k)
         if(k == undefined || index == undefined || value == undefined){
             console.warn("missuse of the L3GBAInputs::Keystate bad params: \
             k:%s , i:%s , val:%s", k, index, value)
             return
         }
         if(typeof k == 'number'){
+            if(k==10){
+                setPauseMenu(true)
+            }
+            if(k==11){
+                setTurboMode(value)
+            }
+            console.log(this.keyState, this.keyList, k, index)
             this.keyState[this.keyList[k]][index] = value
             
         }else if(typeof k == 'string'){
+            if(k=='menu'){
+                setPauseMenu(true)
+            }
+            if(k=='turbo'){
+                setTurboMode(value)
+            }
             this.keyState[k][index] = value
             k = this.convertKeyString(k)
         }else{
@@ -351,6 +368,7 @@ class L3GBAInputs{
     }
     
     normalKeyUp=(e)=> {
+        //console.log(e.key, e.keyCode)
         if (!isRunning) {
             return
         }
@@ -417,6 +435,12 @@ class L3GBAInputs{
         case 'l':
         keyChange=9
         break;
+        case 'menu':
+        keyChange=10
+        break;
+        case 'turbo':
+        keyChange=11
+        break;
         default:
             return
         }
@@ -432,6 +456,7 @@ var this.keyState = {
     //"a": [node][1][2]
     //node usefull only for vk
 };
-const keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l'];
-const keymap = [88, 90, 16, 13, 39, 37, 38, 40, 87, 81] // z x shift enter right left up down w q
+const keyList = ["a", "b", "select", "start", "right", "left", 'up', 'down', 'r', 'l', 'menu', 'turbo'];
+const keymap = [88, 90, 16, 13, 39, 37, 38, 40, 87, 81, 27, 84] // z x shift enter right left up down w q, escape, t
+this.keycodemap= ["z", "w", "shift","enter", "right","left","up","down", "x", "a", "Escape" "t"]
 */

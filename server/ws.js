@@ -16,6 +16,7 @@ function parseToken (data){
 
 export function init(rooms){
 	wss.broadcast = function(data, sender) {
+		console.log("broadcast: %s", data)
 		if(!sender){
 			console.warn("no sender given in broadcast function")
 			return
@@ -25,6 +26,7 @@ export function init(rooms){
 				return
 			}
 			client.send(data)
+			console.log("send: %s", data)
 		})
 		return
 	}
@@ -83,10 +85,13 @@ export function init(rooms){
 			switch(msg[0]){
 				case "d":
 					wss.broadcast(msg, ws)
+					break;
 				case "u":
 					wss.broadcast(msg, ws)
+					break;
 				case "o":
 					wss.broadcast(msg, ws)
+					break;
 				case "f":
 					wss.broadcast(msg, ws)
 					break;

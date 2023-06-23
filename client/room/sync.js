@@ -117,10 +117,10 @@ let L3GBAAPIParsing=(data)=>{
 	let code = data.data
 	switch(code[0]){
 		case "d":
-			inputs.setKeyState(Number(code[1]),1,1,false)
+			inputs.setKeyState(Number(code.substring(1)),1,1,false)
 			break;
 		case "u":
-			inputs.setKeyState(Number(code[1]),1,0,false)
+			inputs.setKeyState(Number(code.substring(1)),1,0,false)
 			break;
 		case "o":
 			setPauseMenu(true, false)
@@ -136,7 +136,6 @@ let L3GBAAPIParsing=(data)=>{
 			break;
 		case "q":
 			addUser(code.substring(2), false)
-			console.log(roomSettings)
 			if(roomSettings[2]==1){
 				setPauseMenu(true, false)
 			}

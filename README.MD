@@ -44,7 +44,7 @@ feel free.
     - [x] test touchpad
 - [ ] feature reintroduction
     - [x] Cheats (untested)
-    - [ ] turbo mode
+    - [x] turbo mode
 - [ ] room settings
     - [ ] set a tooltip for room settings
     - [x] pause on disconnect/reconnect
