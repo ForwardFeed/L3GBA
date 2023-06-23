@@ -47,7 +47,7 @@ feel free.
     - [ ] turbo mode
 - [ ] room settings
     - [ ] set a tooltip for room settings
-    - [ ] pause on disconnect/reconnect
+    - [x] pause on disconnect/reconnect
     - [ ] lag input for sync improvement
     - [ ] notify if clients aren't using the same file
     - [ ] implement join in middle of active room

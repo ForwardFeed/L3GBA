@@ -236,7 +236,7 @@ function loadRomArrayBuffer(arrayBuffer) {
         console.log(u8[i])
         gameID += String.fromCharCode(u8[i])
     }
-    if ((u8[0xAC] == 0) || (gameID.substr(0, 4) == '0000')) {
+    if ((u8[0xAC] == 0) || (gameID.substring(0, 4) == '0000')) {
         // a homebrew! use file name as id
         gameID = romFileName
     }
@@ -249,7 +249,8 @@ function loadRomArrayBuffer(arrayBuffer) {
     var ret = Module._emuLoadROM(u8.length)
     //now i can wait for the sync
     let btnChoose = document.getElementById('rom-load')
-    btnChoose.classList.add("valid");
+    btnChoose.classList.remove("unready");
+    btnChoose.classList.add("ready");
     btnChoose.innerText="Valid ROM"
     let btnReady = document.getElementById('ready')
     btnReady.hidden = false

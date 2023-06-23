@@ -26,15 +26,21 @@ header {
     padding-right: 2%;
     box-shadow: 10px 5px 5px #0f3a36;
 }
-
-header>h1 {
+.header-title{
+    display: flex;
+    flex-wrap: wrap;
+}
+.header-title>h1 {
     width: fit-content;
-    margin: 0;
+    margin: 5px;
     color: #000000;
 }
-
+.header-title>p {
+    width: fit-content;
+    margin-left: 50px;
+}
 label {
-    padding: 2px;
+    padding: 6px;
     border: solid;
     border-color: #010105;
     border-width: 1px;
@@ -48,6 +54,8 @@ button {
 }
 
 input {
+    padding: 3px;
+    padding-left: 6px;
     border-width: 1px;
     border-left-color: #010105;
     border-right-color: #010105;
