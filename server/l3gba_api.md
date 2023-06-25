@@ -14,8 +14,9 @@ delimiter too,
 | username     | n_**XYZ**          | username of the client                                                   |
 | readyness    | r**X**             | **X** is boolean to tell if ready or not                                 |
 | start        | s                  | all clients are ready, thus game can start, a client is fireing the go   |
-| settings     | x_**X****XYZ**     | share the room settings **X** with value **XYZ** between each clients    |
+| settings     | x_**X****XYZ**     | share the room settings index **X** with value **XYZ**                   |
 | all settings | a_**X****XYZ**#s   | client ask for the room settings                                         |
+| room status  | z                  | reset for everyone the emulator                                          |
 
 | name         | server sent?| client sent?|
 |--------------|-------------|-------------|
@@ -31,3 +32,4 @@ delimiter too,
 | start        | yes         | yes         |
 | settings     | yes         | yes         |
 | all settings | yes         | yes         |
+| room status  | yes         | yes         |

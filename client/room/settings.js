@@ -36,8 +36,10 @@ function parseSettings(msg){
             }
         break;
         default:
-            console.warn("unknown settings ID: "+msg[2])
+            console.warn("unknown settings ID: "+msg[0])
+            return
     }
+    roomSettings[msg[0]]=msg[1]
 }
 function parseAllSettings(msg){
     let setsArray = msg.split("~")

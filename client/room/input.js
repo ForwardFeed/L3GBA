@@ -355,7 +355,7 @@ class L3GBAInputs{
         
     }
     normalKeyDown(e){
-        tryInitSound()
+        //tryInitSound()
         if (!isRunning) {
             return
         }

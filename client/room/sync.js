@@ -4,10 +4,17 @@ let wsAdd = "ws://"+location.hostname+":9091"
 const socket = new WebSocket(wsAdd);
 var clientUsername = ""
 
+
+
 function onClickGo(){
 	let btn = document.getElementById("go")
 	socket.send("s")
 	btn.innerText="reset emulator"
+	btn.onclick=onClickReset
+}
+
+function onClickReset(){
+	socket.send("z")
 }
 
 var onClickReady = () =>{
@@ -89,7 +96,16 @@ function getCookie(cookiename)
 }
 
 let WSAuth = ()=>{
-	let  token = getCookie('token');
+	let token = getCookie('token');
+	if(!token){
+		window.location.href="/"
+		return
+	}
+	//set room name here
+	let roomRE=/^[^~]+/
+	let roomName=roomRE.exec(token)[0]||""
+	document.getElementById("room-name").innerText="room "+roomName
+	//finaly send the auth token to the server
 	socket.send(token);
 }
 
@@ -153,13 +169,21 @@ let L3GBAAPIParsing=(data)=>{
 			setUserReady(code.substring(2))
 			break;
 		case "s":
-			startEmulation()
+			if(!isRunning){
+				startEmulation()
+				let btn = document.getElementById("go")
+				btn.innerText="reset emulator"
+				btn.onclick=onClickReset
+			}
 			break
 		case "x":
 			parseSettings(code.substring(2))
 			break;
 		case "a":
 			parseAllSettings(code.substring(2))
+			break;
+		case "z":
+			startEmulation()
 			break;
 		default:
 			console.warn("API wise unknown server message %s",code)

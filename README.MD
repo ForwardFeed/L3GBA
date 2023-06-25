@@ -34,7 +34,7 @@ feel free.
 - [ ] Security
     - [ ] rate limit the room creations
 - [ ] ServerSide
-    - [ ] prevent spamming key (when holding down)
+    - [x] prevent spamming key (fixed missing break)
     - [ ] a more professionnal back end (logging, containers)?
     - [ ] heartbeat to disconnect any freezing client?
     - [ ] config file (hostname, client cookie maxAge)
@@ -42,15 +42,16 @@ feel free.
 - [ ] hardware porting
     - [ ] test gamepad
     - [x] test touchpad
-- [ ] feature reintroduction
+- [x] feature reintroduction
     - [x] Cheats (untested)
     - [x] turbo mode
 - [ ] room settings
+    - [ ] turbo mode speed
     - [ ] set a tooltip for room settings
     - [x] pause on disconnect/reconnect
     - [ ] lag input for sync improvement
     - [ ] notify if clients aren't using the same file
-    - [ ] implement join in middle of active room
+    - [x] implement join in middle of active room
 - [ ] room features
     - [ ] a force resync where one player share its gamestate (384 kb i believe)
     - [ ] sharing savefiles (max: 512kb )

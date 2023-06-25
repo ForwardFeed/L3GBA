@@ -6,7 +6,7 @@ class L3GBAroom{
         this.roomSettings=[
             0,0,0,  //for more infos check the client side settings.js file
         ]
-        
+
         this.lastActive=Date.now()
         this.emptyTTL=60000//empty time to live in millis
         this.aClients=new Array()//active-clients
@@ -62,7 +62,7 @@ class L3GBAroom{
     updateRoomSettings(index, value){
         this.roomSettings[index]=value
     }
-    
+
 }
 
 export class L3GBARoomList{
@@ -108,7 +108,6 @@ export class L3GBARoomList{
     }
 
     addAuthedClient(name){
-        //!TODO limit the number of chars
         let token = this.getLikelyUniqueToken()
         this.roomMap.get(name).addToken(token)
 

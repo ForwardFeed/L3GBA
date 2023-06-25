@@ -13,10 +13,17 @@ function parseToken (data){
 	return [roomID, token]
 }
 
+function areAllReady(room){
+	room.aClients.forEach(function(client){
+		if(!client.ready){
+			return false
+		}
+	})
+	return true
+}
 
 export function init(rooms){
 	wss.broadcast = function(data, sender) {
-		console.log("broadcast: %s", data)
 		if(!sender){
 			console.warn("no sender given in broadcast function")
 			return
@@ -26,7 +33,6 @@ export function init(rooms){
 				return
 			}
 			client.send(data)
-			console.log("send: %s", data)
 		})
 		return
 	}
@@ -71,6 +77,7 @@ export function init(rooms){
 		
 		ws.on('close', function close() {
 			if(!ws.auth){
+				console.log("bad auth")
 				return
 				//bad auth
 			}
@@ -129,13 +136,7 @@ export function init(rooms){
 					wss.broadcast("r_"+ws.username+msg.substring(2),ws)
 					break;
 				case "s":
-					var isOneNotReady=false
-					ws.room.aClients.forEach(function(client){
-						if(!client.ready){
-							isOneNotReady=true
-						}
-					})
-					if(!isOneNotReady){
+					if(areAllReady(ws.room)){
 						ws.send("s")
 						wss.broadcast("s", ws)
 					}
@@ -152,8 +153,14 @@ export function init(rooms){
 					}
 					ws.send(retMsg)
 					break;
+				case "z":
+					if(areAllReady(ws.room)){
+						ws.send(msg)
+						wss.broadcast(msg, ws)
+					}
+					break;
 				default:
-					console.warn("API wise unknown client message %s", data)
+					console.warn("L3GBAPI : unknown client message %s", data)
 			}
 		}
 		

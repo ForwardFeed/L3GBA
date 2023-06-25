@@ -233,7 +233,6 @@ function loadRomArrayBuffer(arrayBuffer) {
         return
     }
     for (var i = 0xAC; i < 0xB2; i++) {
-        console.log(u8[i])
         gameID += String.fromCharCode(u8[i])
     }
     if ((u8[0xAC] == 0) || (gameID.substring(0, 4) == '0000')) {
@@ -410,7 +409,6 @@ function showMsg(msg, time) {
 }
 
 function setTurboMode(t) {
-    console.log("turbo")
     t = t ? true : false
     if (turboMode == t) {
         return
