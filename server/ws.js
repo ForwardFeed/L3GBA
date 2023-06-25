@@ -2,7 +2,7 @@
 
 import { WebSocketServer } from 'ws';
 
-export const wss = new WebSocketServer({ port: 9091 });
+export 
 
 
 function parseToken (data){
@@ -22,7 +22,8 @@ function areAllReady(room){
 	return true
 }
 
-export function init(rooms){
+export function init(rooms, cfg){
+	const wss = new WebSocketServer({ port: cfg.ws_port });
 	wss.broadcast = function(data, sender) {
 		if(!sender){
 			console.warn("no sender given in broadcast function")

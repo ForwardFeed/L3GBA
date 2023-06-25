@@ -37,7 +37,7 @@ feel free.
     - [x] prevent spamming key (fixed missing break)
     - [ ] a more professionnal back end (logging, containers)?
     - [ ] heartbeat to disconnect any freezing client?
-    - [ ] config file (hostname, client cookie maxAge)
+    - [x] config file
     - [ ] an https mode?
 - [ ] hardware porting
     - [ ] test gamepad
@@ -55,7 +55,7 @@ feel free.
 - [ ] room features
     - [ ] a force resync where one player share its gamestate (384 kb i believe)
     - [ ] sharing savefiles (max: 512kb )
-    - [ ] prevent the player to missclick into leaving the room
+    - [x] prevent the player to missclick into leaving the room
 - [ ] add warning for unsupported harware on the main page.
     - [x] wasm
     - [ ] gamepad

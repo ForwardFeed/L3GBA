@@ -6,10 +6,10 @@ const __dirname = path.resolve(path.dirname(''));
 
 
 
-export function init(rooms){
+export function init(rooms, cfg){
 	const http = express()
-	const port = 9090
-	const hostname = '127.0.0.0';
+	const port = cfg.http_port
+	const hostname = cfg.hostname
 
 	http.use(cookieParser())
 	http.use(express.static('client'))
