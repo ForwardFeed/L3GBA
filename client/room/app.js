@@ -47,7 +47,6 @@ var tmpSaveBuf = new Uint8Array(wasmSaveBufLen)
 var frameCnt = 0
 var last128FrameTime = 0
 var lastFrameTime = 0
-var frameSkip = 0
 var lowLatencyMode = false
 
 var lastCheckedSaveState = 0
@@ -73,7 +72,7 @@ function processAudio(event) {
     var audioData0 = outputBuffer.getChannelData(0)
     var audioData1 = outputBuffer.getChannelData(1)
 
-    if ((!isRunning) || (turboMode)) {
+    if ((!isRunning) ) {
         for (var i = 0; i < AUDIO_BLOCK_SIZE; i++) {
             audioData0[i] = 0
             audioData1[i] = 0
@@ -204,6 +203,9 @@ function savRestoreBtn() {
 }
 
 function applyCheatCode() {
+    if(!cheatCode){
+        return
+    }
     var ptrGBuf = Module._emuGetSymbol(4)
     var gbuf = Module.HEAPU8.subarray(ptrGBuf, ptrGBuf + 0x1000)
     var lines = cheatCode.split('\n')
@@ -262,11 +264,9 @@ function startEmulation(){
 	document.getElementById('pause').hidden = false
     loadSaveGame(0, function () {
         Module._emuResetCpu()
-        //applyCheatCode()
+        applyCheatCode()
         //alert('cheat code loaded')
         //removed cheating ability so far
-        
-        
         isRunning = true
         
     })
@@ -325,7 +325,7 @@ function emuRunFrame() {
             checkSaveBufState()
         }
         if (frameCnt % 128 == 0) {
-
+            frameCnt=0
             if (last128FrameTime) {
                 var diff = performance.now() - last128FrameTime
                 var frameInMs = diff / 128
@@ -339,11 +339,21 @@ function emuRunFrame() {
 
         }
         lastFrameTime = performance.now()
-        Module._emuRunFrame(inputs.getVKState());
-        drawContext.putImageData(idata, 0, 0);
+       
+        if(turboMode==true){
+             //frame skipping loop
+            for(let i=0; i<roomSettings[4]; i++){
+                Module._emuRunFrame(inputs.getVKState());
+                drawContext.putImageData(idata, 0, 0);
+            }
+        }else{
+            Module._emuRunFrame(inputs.getVKState());
+            drawContext.putImageData(idata, 0, 0)
+        }
+        ;
+        
     }
 }
-
 
 function emuLoop() {
     window.requestAnimationFrame(emuLoop)
@@ -409,16 +419,17 @@ function showMsg(msg, time) {
 }
 
 function setTurboMode(t) {
-    t = t ? true : false
+    if(!t || t==0){
+        t = false
+    }else{
+        t=true
+    }
+    if(roomSettings[3]==1){
+        return //mode turbo disabled
+    }
     if (turboMode == t) {
         return
     }
-    if (t) {
-        turboInterval = setInterval(emuRunFrame, 2)
-    } else {
-        clearInterval(turboInterval)
-    }
-    
     turboMode = t
 }
 /*
@@ -504,15 +515,13 @@ function filterCheatCode(code) {
 
 { //pause to menu
     
-    document.getElementById("pause").onclick=function(){
-        //this prevents to trigger pause again in a sort of vicious lopp 
+    document.getElementById("pause").onclick=function(){ 
         setPauseMenu(true, true)
     }
 }
 
 { //menu to continue
-    document.getElementById("return").onclick=function(){
-        //this prevents to trigger pause again in a sort of vicious loop  
+    document.getElementById("return").onclick=function(){ 
         setPauseMenu(false, true)
     }
 }

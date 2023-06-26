@@ -319,7 +319,6 @@ class L3GBAInputs{
 
     */
     setKeyState(k, index, value, flag){
-        console.log(k)
         if(k == undefined || index == undefined || value == undefined){
             console.warn("missuse of the L3GBAInputs::Keystate bad params: \
             k:%s , i:%s , val:%s", k, index, value)
@@ -330,9 +329,13 @@ class L3GBAInputs{
                 setPauseMenu(true)
             }
             if(k==11){
-                setTurboMode(value)
+                if(value=='0'){
+                    setTurboMode(false)
+                }else{
+                    setTurboMode(true)
+                }
+                
             }
-            console.log(this.keyState, this.keyList, k, index)
             this.keyState[this.keyList[k]][index] = value
             
         }else if(typeof k == 'string'){
@@ -340,7 +343,11 @@ class L3GBAInputs{
                 setPauseMenu(true)
             }
             if(k=='turbo'){
-                setTurboMode(value)
+                if(value=='0'){
+                    setTurboMode(false)
+                }else{
+                    setTurboMode(true)
+                }
             }
             this.keyState[k][index] = value
             k = this.convertKeyString(k)

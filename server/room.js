@@ -4,7 +4,7 @@ export class L3GBAroom{
         this.name=name
         this.passwd=passwd
         this.roomSettings=[
-            0,0,0,  //for more infos check the client side settings.js file
+            0,0,0,0,2  //for more infos check the client side settings.js file
         ]
 
         this.lastActive=Date.now()

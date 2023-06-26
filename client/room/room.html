@@ -8,7 +8,7 @@
         <div id="menu">
             <div class="top-buttons">
                 <div id="select-rom">
-                    <input type="file" id="romFile" onchange="onFileSelected()" hidden />
+                    <input type="file" accept=".gba" id="romFile" onchange="onFileSelected()" hidden />
                     <button class="top-button unready" id="rom-load">Wait...</button>
                     <button class="top-button unready" id="ready" onclick="onClickReady()" hidden>Click to ready</button>
                     <button class="top-button unready" id="go" onclick="onClickGo()" hidden>Start game</button>
@@ -31,18 +31,24 @@
                         <label for="setpauseonjoin"> Set pause on join</label>
                     </div>
                     <div class="room-set">
-                        <input type="checkbox" name="setpauseondisc" id="setpauseondisc" class="room-set-checkbox"
+                        <input type="checkbox" name="setpauseondisc" id="setpauseondisc"
                         tooltip="if one player leave, instant pause for everyone">
                         <label for="setpauseondisc"> Set pause on disconnect</label>
                     </div>
-                    <div class="room-set" hidden>
+                    <div class="room-set">
                         <input type="checkbox" name="setturbomode" id="setturbomode">
-                        <label for="setturbomode">Disable Mode turbo</label>
+                        <label for="setturbomode">Disable mode turbo</label>
+                    </div>
+                    <div class="room-set">
+                        <input type="number" name="seturbospeed" id="seturbospeed"
+                        min="1" max="9" value="2" tooltip="">
+                        <label for="seturbospeed">Set turbo speed</label>
                     </div>
                     <div class="room-set" hidden>
                         <input type="checkbox" name="setlaginput" id="setlaginput" tooltip="">
                         <label for="setlaginput">Lag input for sync</label>
                     </div>
+                    
 
                 </div>
             </div>

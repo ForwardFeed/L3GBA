@@ -146,7 +146,7 @@ export function init(rooms, cfg, pLog){
 					}
 					break;
 				case "x":
-					ws.room.updateRoomSettings(msg[2], msg[3])
+					ws.room.updateRoomSettings(msg[2], msg.substring(1))
 					wss.broadcast(msg, ws)
 					break;
 				case "a":

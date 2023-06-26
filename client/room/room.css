@@ -125,6 +125,10 @@ legend{
     margin-left: 2px;
     
 }
+#seturbospeed{
+    width: 5%;
+    min-width: 40px;
+}
 .save-div{
     width: 100%;
     height: fit-content;
