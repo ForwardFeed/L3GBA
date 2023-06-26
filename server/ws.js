@@ -18,7 +18,10 @@ function areAllReady(room){
 	return true
 }
 
-export function init(rooms, cfg, log){
+export function init(rooms, cfg, pLog){
+	const log = pLog.getLogger('ws')
+	log.setLevel(cfg.ws_loglevel)
+
 	const wss = new WebSocketServer({ port: cfg.ws_port });
 	wss.broadcast = function(data, sender) {
 		if(!sender){
@@ -35,12 +38,15 @@ export function init(rooms, cfg, log){
 	}
 
 	wss.on('connection', function connection(ws) {
-		log.info("client connected")
+		log.debug("client connection")
 
 		let clientAuth = (data)=>{
 			let msg = data.toString()
 			// the minimun length of a token is 10
-			if(!msg || msg.length<10){
+			if(!msg || msg.length<10 || msg.length>29){
+				if(msg){
+					log.warn(`client tried connection with this invalid auth: [${msg}]`)
+				}
 				ws.send("invalid")
 				/* a good willed clients wouldn't spam
 				 and would end up reloading the page
@@ -58,6 +64,7 @@ export function init(rooms, cfg, log){
 				ws.ready=0
 				ws.room = rooms.getRoom(parsed[0])
 				ws.id = parsed[1]
+				log.info(`client [${ws.id}] auth valid in [${ws.room.name}]`)
 				ws.send("valid")
 				rooms.setActivityClient(ws, true)
 			}else{
@@ -74,16 +81,16 @@ export function init(rooms, cfg, log){
 		
 		ws.on('close', function close() {
 			if(!ws.auth){
-				log.info("bad auth")
+				log.info("client disconnected: reason: bad auth")
 				return
 				//bad auth
 			}
 			rooms.setActivityClient(ws, false)
 			let bcMsg = "q_"+ws.username
 			wss.broadcast(bcMsg, ws)
-	  		log.info("client disconnected")
-		});
+			log.info(`client disconnected [${ws.id}]`)
 
+		});
 		let L3GBAAPIParsing = (data)=>{
 			let msg = data.toString()
 			switch(msg[0]){
@@ -164,6 +171,6 @@ export function init(rooms, cfg, log){
 		
 	});
 
-	log.info(`Websocket server listening on \tws://${cfg.hostname}:${cfg.ws_port}`)
+	log.info(`Websocket server listening on ws://${cfg.hostname}:${cfg.ws_port}`)
 }
 

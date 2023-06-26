@@ -1,20 +1,21 @@
 import {L3GBAroom} from "./room.js"
 
 export class L3GBARoomList{
-    constructor(log){
-        this.log=log
+    constructor(cfg, pLog){
+        this.log = pLog.getLogger('rooms')
+	    this.log.setLevel(cfg.ws_loglevel)
         this.roomMap= new Map()
-        //this.roomMap.set("id", new L3GBAroom("id", "passwd"))
     }
     /*
         function to clean unused rooms
     */
     killInactiveRoom(){
-        this.roomMap.forEach(function(val, key, map){
+        for (const [key, val] of this.roomMap){
             if(!val.onUse && val.hasExpired){
-                map.delete(key)
+                this.log.info(`deleting room [${val.name}]`)
+                this.roomMap.delete(key)
             }
-        })
+        }
     }
     /*
         return a string reasonnably long of a type:
@@ -36,25 +37,34 @@ export class L3GBARoomList{
 
     checkPasswd(name, passwd){
         if(!name){
+            this.log.debug("checkPasswd: missing param: name")
             return false
         }
         return this.roomMap.get(name).comparePasswd(passwd)
     }
 
     addAuthedClient(name){
+        let room = this.roomMap.get(name)
         let token = this.getLikelyUniqueToken()
-        this.roomMap.get(name).addToken(token)
-
+        
+        room.addToken(token)
         let SeparationChar = '~'
-        return  name+SeparationChar+token
+        let clientToken = name+SeparationChar+token
+        this.log.debug("added token ["+clientToken+"]")
+        return clientToken
     }
 
     checkAuthedClient(name, token){      
-        if(!name || !token){
+        if(!name){
+            this.log.warn("checkAuthedClient: missing param: name")
+            return false
+        }if(!token){
+            this.log.warn("checkAuthedClient: missing param: token")
             return false
         }
         let room = this.roomMap.get(name)
         if(!room){
+            this.log.debug("checkAuthedClient: no room named:"+ name)
             return false
         }
         return room.hasToken(token)
@@ -65,19 +75,23 @@ export class L3GBARoomList{
     */
     setActivityClient(ws, flag){
         if(!ws){
+            this.log.warn("setActivityClient: missing param: ws")
             return
         }
         if(!ws.room){
-            this.log.error("no room for client", ws)
+            this.log.warn("setActivityClient: ws missing room prop")
             return
         }
         if(flag){
+            this.log.debug(`setActivityClient adding active client [${ws.id}] in [${ws.room.name}]`)
             ws.room.addActiveClient(ws)
         }else{
+            this.log.debug(`setActivityClient removing active client [${ws.id}] in [${ws.room.name}]`)
             ws.room.removeActiveClient(ws)
         }
     }
     createRoom(name, passwd){
+        this.log.debug("createRoom creating new room: "+name)
         this.roomMap.set(name, new L3GBAroom(name, passwd))
     }
 

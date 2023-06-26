@@ -55,7 +55,7 @@ export function configureLogger(){
     prefix.reg(log);
     prefix.apply(log, {
         format(level, name, timestamp) {
-            return `${chalk.gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](level)}`;
+            return `${chalk.gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](level)} ${chalk.green(`${name}:`)}`;
         },
     });
 
@@ -78,13 +78,13 @@ export function configureLogger(){
 */
 export function verify(cfg,logger,flag){
     if(!cfg || !logger){
-        console.warn("config.verify:    missing parameters")
+        return false
     }
     var isNonCritical = true
     if(!cfg.hostname){
         logger.error("config.verify:    missing hostname")
         if(flag){
-            logger.warn("setting hostname: tolocalhost")
+            logger.warn("setting hostname to localhost")
             cfg.hostname="127.0.0.1"
         }else{
             isNonCritical=false
@@ -112,6 +112,21 @@ export function verify(cfg,logger,flag){
         logger.warn("config.verify:     missing loglevel")
         logger.warn("setting loglevel to warn")
         cfg.loglevel="warn"
+    }
+    if(!cfg.http_loglevel){
+        logger.warn("config.verify:     missing http_loglevel")
+        logger.warn("setting http_loglevel to warn")
+        cfg.http_loglevel="warn"
+    }
+    if(!cfg.ws_loglevel){
+        logger.warn("config.verify:     missing ws_loglevel")
+        logger.warn("setting ws_loglevel to warn")
+        cfg.ws_loglevel="warn"
+    }
+    if(!cfg.rooms_loglevel){
+        logger.warn("config.verify:     missing rooms_loglevel")
+        logger.warn("setting rooms_loglevel to warn")
+        cfg.rooms_loglevel="warn"
     }
     return isNonCritical
 }

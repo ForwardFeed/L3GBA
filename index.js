@@ -11,6 +11,6 @@ if (!config.verify(cfg, log, true)){
 }
 log.setLevel(cfg.loglevel)
 log.info("configuration file valid")
-var rooms = new L3GBARoomList(log)
+var rooms = new L3GBARoomList(cfg, log)
 httpServer.init(rooms, cfg, log)
 webSocketServer.init(rooms, cfg, log)
