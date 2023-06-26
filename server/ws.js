@@ -1,8 +1,4 @@
-
-
 import { WebSocketServer } from 'ws';
-
-export 
 
 
 function parseToken (data){
@@ -22,11 +18,11 @@ function areAllReady(room){
 	return true
 }
 
-export function init(rooms, cfg){
+export function init(rooms, cfg, log){
 	const wss = new WebSocketServer({ port: cfg.ws_port });
 	wss.broadcast = function(data, sender) {
 		if(!sender){
-			console.warn("no sender given in broadcast function")
+			log.warn("no sender given in broadcast function")
 			return
 		}
 		sender.room.aClients.forEach(function(client){
@@ -39,7 +35,7 @@ export function init(rooms, cfg){
 	}
 
 	wss.on('connection', function connection(ws) {
-		console.log("client connected")
+		log.info("client connected")
 
 		let clientAuth = (data)=>{
 			let msg = data.toString()
@@ -73,19 +69,19 @@ export function init(rooms, cfg){
 			
 		}
 		
-		ws.on('error', console.error);
+		ws.on('error', log.error);
 		ws.once('message', clientAuth)
 		
 		ws.on('close', function close() {
 			if(!ws.auth){
-				console.log("bad auth")
+				log.info("bad auth")
 				return
 				//bad auth
 			}
 			rooms.setActivityClient(ws, false)
 			let bcMsg = "q_"+ws.username
 			wss.broadcast(bcMsg, ws)
-	  		console.log("client disconnected")
+	  		log.info("client disconnected")
 		});
 
 		let L3GBAAPIParsing = (data)=>{
@@ -161,13 +157,13 @@ export function init(rooms, cfg){
 					}
 					break;
 				default:
-					console.warn("L3GBAPI : unknown client message %s", data)
+					log.warn("L3GBAPI : unknown client message %s", data)
 			}
 		}
 		
 		
 	});
 
-	console.log("WebSocket Server has been initialised")
+	log.info(`Websocket server listening on \tws://${cfg.hostname}:${cfg.ws_port}`)
 }
 

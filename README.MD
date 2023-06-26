@@ -34,8 +34,9 @@ feel free.
 - [ ] Security
     - [ ] rate limit the room creations
 - [ ] ServerSide
-    - [x] prevent spamming key (fixed missing break)
-    - [ ] a more professionnal back end (logging, containers)?
+    - [x] prevent spamming key (bug fixed)
+    - [x] basic logging system
+    - [ ] deployement tooling
     - [ ] heartbeat to disconnect any freezing client?
     - [x] config file
     - [ ] an https mode?

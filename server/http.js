@@ -6,7 +6,7 @@ const __dirname = path.resolve(path.dirname(''));
 
 
 
-export function init(rooms, cfg){
+export function init(rooms, cfg, log){
 	const http = express()
 	const port = cfg.http_port
 	const hostname = cfg.hostname
@@ -97,6 +97,6 @@ export function init(rooms, cfg){
 	})
 
 	http.listen(port, () => {
-		console.log(`Server http listening on port http://${hostname}:${port}`)
+		log.info(`HTTP server listening on\thttp://${hostname}:${port}`)
 	})
 }

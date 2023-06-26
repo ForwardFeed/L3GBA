@@ -1,5 +1,6 @@
 {
     "hostname":     "127.0.0.1",
     "http_port":    9093,
-    "ws_port":      9094
+    "ws_port":      9094,
+    "loglevel":     "warn"
 }
