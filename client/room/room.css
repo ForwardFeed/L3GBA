@@ -15,6 +15,7 @@ button{
     border-width: 2px;
     border-style: solid;
     font-weight: bold;
+    min-width: fit-content;
 }
 button:hover{
     background-color: #3dc3cf;
@@ -192,17 +193,23 @@ legend{
 }
 #kb-set{
     width: fit-content;
-    display: block;
+    display: flex;
 }
 .btn-set-key{
-    margin: 3px;
-    width: 30%;
+    height: 100%;
+    border-color: #01010560;
 }
-.half-btn-set-key{
-    width: 15%;
+.key-dir{
+    background-color: #36617e;
 }
-.fifty-btn-set-key{
-    width: 45%;
+.key-act{
+    background-color: #195d8a;
+}
+.key-sup{
+    background-color: #185fa1;
+}
+.key-met{
+    background-color: #1c5c9754;
 }
 #cheats>textarea{
     margin-right: 20%;
@@ -257,6 +264,28 @@ legend{
     color: #fdfdfd;
 }
 
+.right{
+    float: right;
+}
+.left{
+    float: left;
+}
+.two-row{
+    display: flex;
+    flex-direction: column;
+    height: 10vw;
+    width: fit-content;
+}
+.three-col{
+    display: flex;
+    justify-content: space-evenly;
+    height: 5vw;
+}
+.three-col>button{
+    padding: 0;
+    margin: 0;
+    width: 5vw;
+}
 
 .valid{
     background-color: #35c63a;
@@ -266,6 +295,36 @@ legend{
     background-color: #f73b2a;
 }
 
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 30vw;
+    height: fit-content;
+    background-color:#070d0e;
+    opacity: 0.8;
+    color: #fdfdfd;
+    text-align: center;
+    margin-left: 10vw;
+    border-radius: 6px;
+    font-weight: lighter;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
 
 
 #gba-canvas {
