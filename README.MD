@@ -37,7 +37,7 @@ feel free.
     - [x] prevent spamming key (bug fixed)
     - [x] basic logging system
     - [ ] deployement tooling
-    - [ ] handle server crashes/reload
+    - [x] save externally room states to recover from server crashes & restart.
     - [x] heartbeat
     - [x] config file
     - [ ] an https mode?

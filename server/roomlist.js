@@ -1,10 +1,16 @@
+import { clearTimeout } from "timers"
 import {L3GBAroom} from "./room.js"
+import fs from 'fs'
 
 export class L3GBARoomList{
     constructor(cfg, pLog){
         this.log = pLog.getLogger('rooms')
 	    this.log.setLevel(cfg.ws_loglevel)
         this.roomMap= new Map()
+        this.saveFile=cfg.savefile
+        fs.readFile(this.saveFile,'utf8', (e,h)=>{this.retrieveFromSave(e,h)})
+        this.interval = setTimeout(()=>{this.saveToFile()}, 60*1000)
+
     }
     /*
         function to clean unused rooms
@@ -67,7 +73,6 @@ export class L3GBARoomList{
             this.log.debug("checkAuthedClient: no room named:"+ name)
             return false
         }
-
         return room.hasToken(token)
     }
     /*
@@ -98,5 +103,54 @@ export class L3GBARoomList{
 
     getRoom(name){
         return this.roomMap.get(name)
+    }
+
+    toRecoverable(entries){
+        var recov = new Map()
+        for (const [key, value] of entries) { 
+            value.aClients=new Array()
+            value.onUse=false
+            recov.set(key, value)
+        }
+        return recov
+        
+    }
+    fromRecover(data){
+        for (const [key, value] of data) {
+            let room = new L3GBAroom(value.name, value.passwd)
+            room.idList=value.idList
+            room.roomSettings=value.roomSettings
+            room.lastActive=value.lastActive
+            room.emptyTTL=value.emptyTTL
+            room.aClients=value.aClients
+            room.onUse=value.onUse
+            this.roomMap.set(key, room)
+        }
+    }
+
+    retrieveFromSave(err, data){
+        if(err){
+            this.log.warn(`couldn't retrieve save from ${this.saveFile}`)
+            return
+        }
+        this.fromRecover(JSON.parse(data))
+        this.log.info("recovered from save")
+    }
+    
+    saveToFile(){
+        let recoverableData = this.toRecoverable(this.roomMap)
+        fs.writeFile(this.saveFile,JSON.stringify([...recoverableData.entries()]),'utf8', (err)=>{
+            if(err){
+                this.log.err(`couldn't save to ${this.saveFile}`)
+            }
+            this.log.info("saved roomMap")
+        })
+        this.interval = setTimeout(()=>{this.saveToFile()}, 60*1000)
+    }   
+
+    forceSaveToFile(){
+        clearTimeout(this.interval)
+        this.saveToFile()
+        this.interval = setTimeout(()=>{this.saveToFile()}, 60*1000)
     }
 }

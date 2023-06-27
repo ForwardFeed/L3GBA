@@ -8,3 +8,4 @@ package-lock.json
 # PROJECT RELATED
 cursedland/
 config/personal.json
+config/serversave.json

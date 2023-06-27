@@ -128,5 +128,10 @@ export function verify(cfg,logger,flag){
         logger.warn("setting rooms_loglevel to warn")
         cfg.rooms_loglevel="warn"
     }
+    if(!cfg.savefile){
+        logger.warn("config.verify:     missing savefile")
+        logger.warn("setting savefile to ./config/serversave.json")
+        cfg.savefile="./config/serversave.json"
+    }
     return isNonCritical
 }

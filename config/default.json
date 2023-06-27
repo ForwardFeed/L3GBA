@@ -6,5 +6,7 @@
     "loglevel"          : "warn",
     "http_loglevel"     : "warn",
     "ws_loglevel"       : "warn",
-    "rooms_loglevel"    : "warn"
+    "rooms_loglevel"    : "warn",
+
+    "savefile": "./config/serversave.json"
 }

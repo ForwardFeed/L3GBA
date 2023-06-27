@@ -36,8 +36,8 @@ export class L3GBAroom{
         this.onUse=true
     }
 
-    removeActiveClient(id){
-        this.aClients=this.aClients.filter(client => client!=id)
+    removeActiveClient(ws){
+        this.aClients=this.aClients.filter(client => client!=ws)
         if(this.aClients.length<=0){
             this.lastActive=Date.now()
             this.onUse=false
