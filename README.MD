@@ -37,7 +37,8 @@ feel free.
     - [x] prevent spamming key (bug fixed)
     - [x] basic logging system
     - [ ] deployement tooling
-    - [ ] heartbeat to disconnect any freezing client?
+    - [ ] handle server crashes/reload
+    - [x] heartbeat
     - [x] config file
     - [ ] an https mode?
 - [ ] hardware porting
@@ -47,7 +48,7 @@ feel free.
     - [x] Cheats (untested)
     - [x] turbo mode
 - [ ] room settings
-    - [ ] turbo mode speed
+    - [x] turbo mode speed
     - [ ] set a tooltip for room settings
     - [x] pause on disconnect/reconnect
     - [ ] lag input for sync improvement

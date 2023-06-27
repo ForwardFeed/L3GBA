@@ -67,6 +67,7 @@ export class L3GBARoomList{
             this.log.debug("checkAuthedClient: no room named:"+ name)
             return false
         }
+
         return room.hasToken(token)
     }
     /*

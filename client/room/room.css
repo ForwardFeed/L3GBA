@@ -96,7 +96,6 @@ legend{
     height: 100%;
     position: relative;
 }
-
 #users{
     height: 10vw;
     width: 50vw;
@@ -105,6 +104,22 @@ legend{
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+}
+#users > span{
+    margin-top: 7px;
+    margin-left: 9px;
+    margin-right: 9px;
+}
+#reconnect{
+    height: 10vw;
+    position: relative;
+}
+#reconnect>button{
+    position: absolute;
+    height: 80%;
+    width: 80%;
+    top: 10%;
+    left: 10%;
 }
 #room-settings{
     display: flex;
@@ -240,12 +255,6 @@ legend{
 .unready{
     background-color: chocolate;
     color: #fdfdfd;
-}
-
-#users > span{
-    margin-top: 7px;
-    margin-left: 9px;
-    margin-right: 9px;
 }
 
 

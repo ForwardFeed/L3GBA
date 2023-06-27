@@ -19,10 +19,16 @@
             <div class="menu-div room-sets-users">
                 <legend>Connected users:</legend>
                 <legend class="">Room Settings</legend>
-                <div class="users-div">
+                <div class="users-div" >
                     <div id="users">
     
-                    </div>      
+                    </div>
+                    <div id="reconnect" hidden>
+                        <button class="unready" onclick="tryReconnect()">
+                            You have been disconnect
+                            click this button to retry connection
+                        </button>
+                    </div>
                 </div>
                 <div id="room-settings">
                     <div class="room-set">

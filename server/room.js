@@ -8,7 +8,7 @@ export class L3GBAroom{
         ]
 
         this.lastActive=Date.now()
-        this.emptyTTL=60000//empty time to live in millis
+        this.emptyTTL=6*1000*10//empty time to live in millis
         this.aClients=new Array()//active-clients
         this.onUse=false
     }
@@ -33,7 +33,6 @@ export class L3GBAroom{
 
     addActiveClient(ws){
         this.aClients.push(ws)
-        this.idList.filter(token => ws.id != ws.token);
         this.onUse=true
     }
 
@@ -45,7 +44,7 @@ export class L3GBAroom{
         }
         
     }
-
+    
     hasToken(token){
         for(let i=0; i<this.idList.length;i++){
             if(this.idList[i]==token){

@@ -18,6 +18,7 @@ function areAllReady(room){
 	return true
 }
 
+
 export function init(rooms, cfg, pLog){
 	const log = pLog.getLogger('ws')
 	log.setLevel(cfg.ws_loglevel)
@@ -36,9 +37,26 @@ export function init(rooms, cfg, pLog){
 		})
 		return
 	}
+	const interval = setInterval(function ping() {
+		wss.clients.forEach(function each(ws) {
+			if (ws.isAlive === false) {
+				return ws.terminate();
+			}
+			ws.isAlive = false;
+			ws.ping();
+		});
+	}, 30000);
+	  
+	wss.on('close', function close() {
+		clearInterval(interval);
+	});
 
 	wss.on('connection', function connection(ws) {
 		log.debug("client connection")
+
+		let heartBeat = () =>{
+			ws.isAlive=true
+		}
 
 		let clientAuth = (data)=>{
 			let msg = data.toString()
@@ -59,9 +77,13 @@ export function init(rooms, cfg, pLog){
 			if(rooms.checkAuthedClient(parsed[0], parsed[1])){
 				// we no longer need to parse the auth now
 				// start parsing this project API
+				ws.isAlive=true
+				ws.on('pong', heartBeat)
+				heartBeat()
 				ws.on('message', L3GBAAPIParsing)
 				ws.auth=true
 				ws.ready=0
+				
 				ws.room = rooms.getRoom(parsed[0])
 				ws.id = parsed[1]
 				log.info(`client [${ws.id}] auth valid in [${ws.room.name}]`)
@@ -88,7 +110,12 @@ export function init(rooms, cfg, pLog){
 			rooms.setActivityClient(ws, false)
 			let bcMsg = "q_"+ws.username
 			wss.broadcast(bcMsg, ws)
-			log.info(`client disconnected [${ws.id}]`)
+			if(ws.timedOut){
+				log.info(`client ${ws.id} timed out`)
+			}else{
+				log.info(`client disconnected [${ws.id}]`)
+			}
+			
 
 		});
 		let L3GBAAPIParsing = (data)=>{
