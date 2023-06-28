@@ -1,14 +1,16 @@
-body{
-    background-color:#010105;
+body {
+    background-color: #010105;
     font-family: 'Myriad Set Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #fdfdfd;
 }
-footer{
+
+footer {
     background-color: #010105;
     padding: 15px;
 }
-button{
+
+button {
     color: #fdfdfd;
     background-color: #1D6F75;
     border-color: #010105;
@@ -17,14 +19,17 @@ button{
     font-weight: bold;
     min-width: fit-content;
 }
-button:hover{
+
+button:hover {
     background-color: #3dc3cf;
 }
-button:active{
+
+button:active {
     box-sizing: border-box;
     border: 5px solid #b3cfd1;
 }
-legend{
+
+legend {
     background-color: #314446;
     text-align: center;
     height: fit-content;
@@ -36,7 +41,8 @@ legend{
     box-sizing: border-box;
     border: 2px solid #070d0e;
 }
-#menu{
+
+#menu {
     position: absolute;
     z-index: 5;
     width: 100%;
@@ -45,11 +51,13 @@ legend{
     left: 0;
     background-color: #152221;
 }
-.menu-div{
+
+.menu-div {
     /*background-color: #2a697c;*/
     background-color: #152221;
 }
-.top-buttons{
+
+.top-buttons {
     display: flex;
     width: 100%;
     height: 15%;
@@ -57,19 +65,23 @@ legend{
     box-sizing: border-box;
     border: 2px solid #070d0e;
 }
-.top-button{
+
+.top-button {
     border: 0;
 }
-#select-rom{
+
+#select-rom {
     display: flex;
     width: 30%;
 }
-#select-rom>button{
+
+#select-rom>button {
     width: 33.33%;
     height: 100%;
     overflow-y: hidden;
 }
-#room-name{
+
+#room-name {
     width: 45%;
     height: 100%;
     display: flex;
@@ -77,27 +89,32 @@ legend{
     justify-content: center;
     background-color: #32ada1;
     color: #010105;
-    
+
 }
-#return{
+
+#return {
     width: 25%;
     height: 100%;
 }
-.room-sets-users{
+
+.room-sets-users {
     display: flex;
     width: 100%;
     height: fit-content;
     flex-wrap: wrap;
 }
-.room-sets-users>legend{
+
+.room-sets-users>legend {
     width: 50%;
 }
-.users-div{
+
+.users-div {
     width: 50%;
     height: 100%;
     position: relative;
 }
-#users{
+
+#users {
     height: 10vw;
     width: 50vw;
     box-sizing: border-box;
@@ -106,23 +123,27 @@ legend{
     flex-direction: column;
     overflow-y: scroll;
 }
-#users > span{
+
+#users>span {
     margin-top: 7px;
     margin-left: 9px;
     margin-right: 9px;
 }
-#reconnect{
+
+#reconnect {
     height: 10vw;
     position: relative;
 }
-#reconnect>button{
+
+#reconnect>button {
     position: absolute;
     height: 80%;
     width: 80%;
     top: 10%;
     left: 10%;
 }
-#room-settings{
+
+#room-settings {
     display: flex;
     flex-direction: column;
     height: 10vw;
@@ -133,44 +154,52 @@ legend{
     box-sizing: border-box;
     border: 2px solid #070d0e;
 }
-.room-set{
+
+.room-set {
     padding-top: 3px;
     padding-left: 3px;
     text-align: left;
     height: fit-content;
     margin-left: 2px;
-    
+
 }
-#seturbospeed{
+
+#seturbospeed {
     width: 5%;
     min-width: 40px;
 }
-.save-div{
+
+.save-div {
     width: 100%;
     height: fit-content;
 }
-.save-header{
+
+.save-header {
     height: fit-content;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     text-align: center;
 }
-.save-title{
+
+.save-title {
     height: fit-content;
     width: 100%;
-    
+
 }
-.save-legend{
+
+.save-legend {
     height: fit-content;
     width: 50%;
 }
-.save-body{
+
+.save-body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
 }
-.save-half-body{
+
+.save-half-body {
     padding-top: 4px;
     padding-bottom: 4px;
     height: 10vw;
@@ -178,56 +207,69 @@ legend{
     display: flex;
     justify-content: space-evenly;
 }
-.save-half-body>button{
+
+.save-half-body>button {
     height: 10vw;
     width: 45%;
-    
+
 }
-#kb-settings{
+
+#kb-settings {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
-#kb-settings>legend{
+
+#kb-settings>legend {
     width: 100%;
 }
-#kb-set{
+
+#kb-set {
     width: fit-content;
     display: flex;
 }
-.btn-set-key{
+
+.btn-set-key {
     height: 100%;
     border-color: #01010560;
 }
-.key-dir{
+
+.key-dir {
     background-color: #36617e;
 }
-.key-act{
+
+.key-act {
     background-color: #195d8a;
 }
-.key-sup{
+
+.key-sup {
     background-color: #185fa1;
 }
-.key-met{
+
+.key-met {
     background-color: #1c5c9754;
 }
-#cheats>textarea{
+
+#cheats>textarea {
     margin-right: 20%;
     margin-left: 20%;
     width: 60%;
     background-color: #77e2d7;
     border: none;
 }
-.leave-div{
+
+.leave-div {
     display: flex;
     justify-content: center;
     padding: 5px;
 }
-#leave{
+
+#leave {
     width: 20vw;
     background-color: #b92815;
 }
-#pause{
+
+#pause {
     position: absolute;
     top: 1%;
     right: 1%;
@@ -241,57 +283,61 @@ legend{
     border: 0.5vw solid #b3cfd1;
 }
 
-#notif{
+#notif {
     z-index: 6;
     position: absolute;
-    top: 3%;
-    width: 50%;
-    border-radius: 80%;
-    background-color: gray;
-    margin: auto;
-}
-#notif-msg{
-    font-size: 200%;
+    bottom: 10vw;
+    left: 1vw;
+    background-color: #f5b6573f;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
-.ready{
+#notif-msg {
+}
+
+.ready {
     background-color: aqua;
     color: #010105;
 }
 
-.unready{
+.unready {
     background-color: chocolate;
     color: #fdfdfd;
 }
 
-.right{
+.right {
     float: right;
 }
-.left{
+
+.left {
     float: left;
 }
-.two-row{
+
+.two-row {
     display: flex;
     flex-direction: column;
     height: 10vw;
     width: fit-content;
 }
-.three-col{
+
+.three-col {
     display: flex;
     justify-content: space-evenly;
     height: 5vw;
 }
-.three-col>button{
+
+.three-col>button {
     padding: 0;
     margin: 0;
     width: 5vw;
 }
 
-.valid{
+.valid {
     background-color: #35c63a;
 }
 
-.invalid{
+.invalid {
     background-color: #f73b2a;
 }
 
@@ -300,31 +346,32 @@ legend{
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-  }
-  
-  /* Tooltip text */
-  .tooltip .tooltiptext {
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
     visibility: hidden;
     width: 30vw;
     height: fit-content;
-    background-color:#070d0e;
+    background-color: #070d0e;
     opacity: 0.8;
     color: #fdfdfd;
     text-align: center;
     margin-left: 10vw;
     border-radius: 6px;
     font-weight: lighter;
-   
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
-  }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:hover .tooltiptext {
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
     visibility: visible;
-  }
+}
 
 
 #gba-canvas {

@@ -63,7 +63,3 @@ feel free.
 - [ ] add warning for unsupported harware on the main page.
     - [x] wasm
     - [ ] gamepad
-- [ ] replace all deprecated function
-    - [ ] audio -> AudioWorklet (requires https)
-    - [ ] window.onorientationchange -> ScreenOrientation
-    - [x] navigator.plateform won't be changed due to its replacement being "meh"
