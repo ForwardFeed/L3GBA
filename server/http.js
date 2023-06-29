@@ -4,7 +4,28 @@ import path from 'path'
 const __dirname = path.resolve(path.dirname(''));
 
 
+function sanInput(data){
+	return data.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
+}
 
+// Validate if the request has its parameters valid for the room access
+function roomReqParamChecker(req){
+	let name = req.query.name
+	let passwd = req.query.passwd
+	if(name==undefined || passwd==undefined){
+		//bad request
+		//400
+		return false
+	}
+	name = sanInput(name)
+	passwd = sanInput(passwd)
+	if(name.length > 20 || passwd.length >20 || name.length < 1){
+		//bad request
+		//too big i refuse
+		return false
+	}
+	return [name, passwd]
+}
 
 export function init(rooms, cfg, pLog){
 	
@@ -20,25 +41,15 @@ export function init(rooms, cfg, pLog){
 	log.setLevel(cfg.http_loglevel)
 
 	http.post("/join_room", function(req, res) {
-		
-		let name = req.query.name
-		let passwd = req.query.passwd
-		if(name==undefined || passwd==undefined){
-			//bad request
-			//400
-			log.warn("/join_room: attempt with no name or passwd field")
+		var params = roomReqParamChecker(req)
+		if(!params){
+			log.warn(`/join_room: bad attempt [${req.query.name} ${req.query.passwd}]`)
 			res.status(400);
 			res.send()
-			return
 		}
-		name = name.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
-		passwd = passwd.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
-		if(name.length > 20 || passwd.length >20){
-			//too big i refuse
-			log.warn(`/join_room: bad attempt [${name} ${passwd}]`)
-			res.status(400);
-		}
-		else if(! rooms.roomExist(name)){
+		var name = params[0]
+		var passwd = params[1]
+		if(! rooms.roomExist(name)){
 			//no room with this name
 			//404
 			res.status(404);
@@ -73,26 +84,15 @@ export function init(rooms, cfg, pLog){
 			it could also get trapped by someone tarpiting the ws :x
 		*/
 		rooms.killInactiveRoom()
-
-		let name = req.query.name.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
-		let passwd = req.query.passwd.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"");
-
-		if(!name || passwd==undefined ){
-			//bad request
-			//400
-			log.warn("/create_room: attempt with no name or passwd field")
+		var params = roomReqParamChecker(req)
+		if(!params){
+			log.warn(`/create_room: bad attempt [${req.query.name} ${req.query.passwd}]`)
 			res.status(400);
 			res.send()
-			return
 		}
-		name = name.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
-		passwd = passwd.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
-		if(name.length > 20 || passwd.length >20){
-			//too big i refuse
-			log.warn(`/create_room: bad attempt [${name} ${passwd}]`)
-			res.status(400);
-		}
-		else if(rooms.roomExist(name)){
+		var name = params[0]
+		var passwd = params[1]
+		if(rooms.roomExist(name)){
 			//a room already exist with this name
 			//409
 			res.status(409);
@@ -107,7 +107,6 @@ export function init(rooms, cfg, pLog){
 			res.cookie('token', auth_token, { maxAge: cookieMaxAge, sameSite:true});
 			res.status(201);
 		}
-		
 		res.send()	
 	})
 

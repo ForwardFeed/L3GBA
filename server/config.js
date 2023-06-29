@@ -13,8 +13,8 @@ import prefix from 'loglevel-plugin-prefix'
 */
 
 var defaultConf = "./config/default.json"
-/*  
-    retrieve the config from the config file
+
+/*  retrieve the config from the config file
     @conf: config file path (relative)
     @return: js object
 */
@@ -40,7 +40,6 @@ export function retrieve(conf){
 
 /*
     configure the logger to be pretty pretty (and more informing)
-    
     returns the logger
 */
 export function configureLogger(){
@@ -73,7 +72,6 @@ export function configureLogger(){
     verify if one of the field of the config file is missing
     log the errors
     if flag is set to true minor errors are corrected
-
     returns false if a critical error has been detected
 */
 export function verify(cfg,logger,flag){

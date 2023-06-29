@@ -1,5 +1,8 @@
 import { WebSocketServer } from 'ws';
 
+function sanInput(data){
+	return data.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
+}
 
 function parseToken (data){
 	let roomRE=/^[^~]+/
@@ -134,7 +137,7 @@ export function init(rooms, cfg, pLog){
 					wss.broadcast(msg, ws)
 					break;
 				case "n":
-					ws.username=msg.substring(2).substring(0,20)
+					ws.username=sanInput(msg.substring(2).substring(0,20))
 					if(ws.username==undefined){
 						ws.username=="anonymUWUs"
 					}

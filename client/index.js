@@ -1,14 +1,14 @@
 function sanInput(input){
     if(!input){
-        return ""
+        return "";
     }
-    return input.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"").substring(0,20)
+    return input.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"").substring(0,20);
 }
-var errorFeedBack = document.getElementById("err-room")
-{ //setup for room join
-    let joinRoomOnclick=(ev)=>{
-        let roomName=sanInput(ev.target.parentNode.children[1].value)
-        let username=sanInput(document.getElementById('username').value)
+var errorFeedBack = document.getElementById("err-room");
+{
+    let  joinRoomOnclick=(ev)=>{
+        let roomName=sanInput(ev.target.parentNode.children[1].value);
+        let username=sanInput(document.getElementById('username').value);
         if(!roomName){
             errorFeedBack.innerText="you forgot about room name didn't you"
             return
@@ -30,15 +30,16 @@ var errorFeedBack = document.getElementById("err-room")
                 }else if(this.status == 400){
                     errorFeedBack.innerText="Client and server seems to not agree on something O_O'"
                 }
-          }
+            }
         };
         let requestURL = "/join_room?name="+roomName+"&passwd="+passwd
         xhttp.open("POST", requestURL, true);
         xhttp.send();
-    }
+    };
     let roomJoin= document.getElementById("join-room")
     roomJoin.onclick=joinRoomOnclick
 }
+
 
 { //setup for room creation
     let createRoomOnclick=(ev)=>{
@@ -77,23 +78,19 @@ var errorFeedBack = document.getElementById("err-room")
     let onInputSan = function(input){
         input.target.value=sanInput(input.target.value)
     }
-    let node = document.getElementById("create-room-name")
-    node.onchange=onInputSan
-    node.onpaste    = onInputSan
-    node.oninput    = onInputSan
-    node = document.getElementById("join-room-name")
-    node.onchange=onInputSan
-    node.onpaste    = onInputSan
-    node.oninput    = onInputSan
-    node = document.getElementById("username")
-    node.onchange=onInputSan
-    node.onpaste    = onInputSan
-    node.oninput    = onInputSan
+    let pageInputs = [
+        document.getElementById("create-room-name"),
+        document.getElementById("create-room-passwd"),
+        document.getElementById("join-room-name"),
+        document.getElementById("join-room-passwd"),
+        document.getElementById("username")
+    ];
+    for (const input of pageInputs){
+        console.log(input)
+        input.onchange=onInputSan
+        input.onpaste= onInputSan
+        input.oninput= onInputSan
+    }
 }
-
-{ // hardware / software checking
-    
-}
-
 
 document.getElementById('username').value=localStorage.getItem('username')
