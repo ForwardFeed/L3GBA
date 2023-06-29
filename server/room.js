@@ -98,6 +98,9 @@ export class L3GBAroom{
     getUserList(){
         var userList = "";
         this.clients.forEach(function(val, key, map){
+            if(val.ws==null){
+                return
+            }
             let r = val.ws.ready ? 1 : 0
             userList+=val.username+r+"~"
         });

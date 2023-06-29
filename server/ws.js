@@ -29,7 +29,7 @@ export function init(rooms, cfg, pLog){
 			return
 		}
 		sender.room.clients.forEach(function(value, key, map){
-			if(sender == value.ws){
+			if(sender == value.ws || value.ws == null){
 				return
 			}
 			value.ws.send(data)
@@ -116,7 +116,11 @@ export function init(rooms, cfg, pLog){
 				return
 				//bad auth
 			}
-			ws.room.removeActiveClient(ws)
+			if( ws.room.removeActiveClient(ws.id)){
+				log.debug(`removed active client ${ws.id}`)
+			}else{
+				log.warn(`couldn't remove active client ${ws.id}`)
+			}
 			let bcMsg = "q_"+ws.username
 			wss.broadcast(bcMsg, ws)
 			if(ws.timedOut){
