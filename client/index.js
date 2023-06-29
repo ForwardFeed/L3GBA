@@ -7,8 +7,8 @@ function sanInput(input){
 var errorFeedBack = document.getElementById("err-room");
 {
     let  joinRoomOnclick=(ev)=>{
-        let roomName=sanInput(ev.target.parentNode.children[1].value);
-        let username=sanInput(document.getElementById('username').value);
+        var roomName=sanInput(ev.target.parentNode.children[1].value);
+        var username=sanInput(document.getElementById('username').value);
         if(!roomName){
             errorFeedBack.innerText="you forgot about room name didn't you"
             return
@@ -16,23 +16,24 @@ var errorFeedBack = document.getElementById("err-room");
             errorFeedBack.innerText="c'mon take a username, won't do that for you"
             return
         }
-        let passwd=ev.target.parentNode.children[3].value
+        var passwd=ev.target.parentNode.children[3].value
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if(this.readyState == 4 ){
                 if(this.status == 200){
-                    localStorage.setItem('username', username)
                     window.location.href='/room'
                 }else if(this.status == 404){
                     errorFeedBack.innerText="No room like this one"
                 }else if(this.status == 401){
                     errorFeedBack.innerText="Bad password"
+                }else if(this.status == 409){
+                    errorFeedBack.innerText="An user has already this username in the room"
                 }else if(this.status == 400){
                     errorFeedBack.innerText="Client and server seems to not agree on something O_O'"
                 }
             }
         };
-        let requestURL = "/join_room?name="+roomName+"&passwd="+passwd
+        let requestURL = "/join_room?room="+roomName+"&passwd="+passwd+"&name="+username
         xhttp.open("POST", requestURL, true);
         xhttp.send();
     };
@@ -43,8 +44,8 @@ var errorFeedBack = document.getElementById("err-room");
 
 { //setup for room creation
     let createRoomOnclick=(ev)=>{
-        let roomName=sanInput(ev.target.parentNode.children[1].value)
-        let username=sanInput(document.getElementById('username').value)
+        var roomName=sanInput(ev.target.parentNode.children[1].value)
+        var username=sanInput(document.getElementById('username').value)
         if(!roomName){
             errorFeedBack.innerText="you forgot about room name didn't you"
             return
@@ -52,21 +53,20 @@ var errorFeedBack = document.getElementById("err-room");
             errorFeedBack.innerText="c'mon take a username, won't do that for you"
             return
         }
-        let passwd=ev.target.parentNode.children[3].value
+        var passwd=ev.target.parentNode.children[3].value
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if(this.readyState == 4 ){
                 if(this.status == 201){
-                    localStorage.setItem('username', username)
                     window.location.href='/room'
                 }else if(this.status == 409){
-                    errorFeedBack.innerText="a room with this name already exist"
+                    errorFeedBack.innerText="A room with this name already exist"
                 }else if(this.status == 400){
                     errorFeedBack.innerText="Client and server seems to not agree on something O_O'"
                 }
           }
         };
-        let requestURL = "/create_room?name="+roomName+"&passwd="+passwd
+        let requestURL = "/create_room?room="+roomName+"&passwd="+passwd+"&name="+username
         xhttp.open("POST", requestURL, true);
         xhttp.send();
     }
@@ -86,7 +86,6 @@ var errorFeedBack = document.getElementById("err-room");
         document.getElementById("username")
     ];
     for (const input of pageInputs){
-        console.log(input)
         input.onchange=onInputSan
         input.onpaste= onInputSan
         input.oninput= onInputSan

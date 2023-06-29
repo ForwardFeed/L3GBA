@@ -144,14 +144,11 @@ let parseAuth = (msg) => {
 	if (data == "valid") {
 		socket.removeEventListener("message", parseAuth)
 		socket.addEventListener("message", L3GBAAPIParsing)
-		let username = localStorage.getItem('username').substring(0, 20)
-		if (!username) {
-			username = "anonymous"
-			localStorage.setItem('username', username)
-		}
-		socket.send("n_" + username)
 		socket.send("a")
 	} else if (data == "invalid") {
+		window.location.href = "/"
+	} else if (data == "in use") {
+		alert("an user with this username is already present in this room")
 		window.location.href = "/"
 	} else {
 		console.error("server didn't answered correctly to the auth process")
@@ -190,9 +187,6 @@ let L3GBAAPIParsing = (data) => {
 			if (roomSettings[1] == 1) {
 				setPauseMenu(true, false)
 			}
-			break;
-		case "n":
-			clientUsername = code.substring(2)
 			break;
 		case "r":
 			setUserReady(code.substring(2))

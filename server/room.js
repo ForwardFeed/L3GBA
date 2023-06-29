@@ -1,3 +1,4 @@
+import {L3GBAClient} from './client.js'
 export class L3GBAroom{
     constructor(name, passwd){
         this.idList=new Array()//token list
@@ -9,8 +10,12 @@ export class L3GBAroom{
 
         this.lastActive=Date.now()
         this.emptyTTL=6*1000*10//empty time to live in millis
-        this.aClients=new Array()//active-clients
         this.onUse=false
+
+        // array [token, username, websocket ,activity status]
+        // array [string, string, object ,bool]
+        this.clients=new Map()
+        this.aClientsCnt = 0; //active client count
     }
 
     hasExpired(){
@@ -27,29 +32,81 @@ export class L3GBAroom{
         return false
     }
 
-    addToken(token){
-        this.idList[this.idList.length]=token
+    getUniqueID(){
+        function s4(){
+            return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16).substring(1);
+        }
+
+        while (true){
+            let id = s4()+s4()
+            if(!this.clients.has(id)){
+                return id
+            }
+        }
+    }
+
+    addAuthClient(username){
+        let id = this.getUniqueID()
+        this.clients.set(id, new L3GBAClient(username))
+        return id
     }
 
     addActiveClient(ws){
-        this.aClients.push(ws)
+        let client = this.clients.get(ws.id)
+        if(!client){
+            return false
+        }
         this.onUse=true
+        this.aClientsCnt++
+        client.ws=ws
+        return true
     }
 
-    removeActiveClient(ws){
-        this.aClients=this.aClients.filter(client => client!=ws)
-        if(this.aClients.length<=0){
-            this.lastActive=Date.now()
-            this.onUse=false
+    removeActiveClient(id){
+        let hasWorked = this.clients.delete(id)
+        if(hasWorked){
+            this.aClientsCnt--
+            if(this.aClientsCnt<=0){
+                this.lastActive=Date.now()
+                this.onUse=false
+            }
+            return true
         }
-        
+        return false
     }
     
-    hasToken(token){
-        for(let i=0; i<this.idList.length;i++){
-            if(this.idList[i]==token){
-                return true
+    hasID(id){
+        return this.clients.has(id)
+    }
+
+    hasUsernameActive(username){
+        var flag = false;
+        this.clients.forEach(function(value, key, map){
+            if(value.username==username && value.ws){
+                flag=true
             }
+        });
+        return flag
+    }
+    
+    getUsername(id){
+        return this.clients.get(id).username
+    }
+
+    
+    getUserList(){
+        var userList = "";
+        this.clients.forEach(function(val, key, map){
+            let r = val.ws.ready ? 1 : 0
+            userList+=val.username+r+"~"
+        });
+        return userList
+    }
+
+    isAlreadyActive(id){
+        if(this.clients.get(id).ws){
+            return true
         }
         return false
     }
@@ -62,5 +119,13 @@ export class L3GBAroom{
         this.roomSettings[index]=value
     }
 
+    fromRecover(data){
+        for(let i=0;i<data.length;i++){
+            let id = data[i][0]
+            let username = data[i][1]
+            let client = new L3GBAClient(username)
+            this.clients.set(id, client)
+        }
+    }
 }
 

@@ -10,21 +10,30 @@ function sanInput(data){
 
 // Validate if the request has its parameters valid for the room access
 function roomReqParamChecker(req){
-	let name = req.query.name
+	let room = req.query.room
 	let passwd = req.query.passwd
-	if(name==undefined || passwd==undefined){
+	let name = req.query.name
+	if(room==undefined || passwd==undefined || name==undefined){
 		//bad request
 		//400
 		return false
 	}
-	name = sanInput(name)
+	room = sanInput(room)
 	passwd = sanInput(passwd)
-	if(name.length > 20 || passwd.length >20 || name.length < 1){
+	name = sanInput(name)
+	if(room.length > 20 || passwd.length >20 || name.length >20
+		|| room.length < 1 || name.length < 1){
 		//bad request
-		//too big i refuse
+		//params too big i refuse
 		return false
 	}
-	return [name, passwd]
+	return [room, passwd, name]
+}
+
+function addClient(room, username, roomName){
+	let id = room.addAuthClient(username)
+	let SeparationChar = '~'
+	return roomName+SeparationChar+id
 }
 
 export function init(rooms, cfg, pLog){
@@ -33,6 +42,7 @@ export function init(rooms, cfg, pLog){
 	const port = cfg.http_port
 	const hostname = cfg.hostname
 	const cookieMaxAge=1000*60*60*12
+	const cookieParam = { httpOnly: false, maxAge: cookieMaxAge, sameSite:true}
 
 	http.use(cookieParser())
 	http.use(express.static('client'))
@@ -43,29 +53,39 @@ export function init(rooms, cfg, pLog){
 	http.post("/join_room", function(req, res) {
 		var params = roomReqParamChecker(req)
 		if(!params){
-			log.warn(`/join_room: bad attempt [${req.query.name} ${req.query.passwd}]`)
+			log.warn(`/join_room: bad attempt \
+			[${req.query.room}|${req.query.passwd}|${req.query.name}]`)
 			res.status(400);
 			res.send()
+			return
 		}
-		var name = params[0]
+		var roomName = params[0]
 		var passwd = params[1]
-		if(! rooms.roomExist(name)){
+		var username = params[2]
+
+		var room = rooms.getRoom(roomName)
+		if(!room){
 			//no room with this name
 			//404
 			res.status(404);
-		}
-		else if(!rooms.checkPasswd(name, passwd)){
+		}else if(!room.comparePasswd(passwd)){
 			//wrong passwd
 			//401
 			res.status(401);
-
-		}else{
+		}else if(room.hasUsernameActive(username)){
+			//an active user in the room has already this username
+			//409
+			res.status(409);
+		}
+		else{
 			//good room
 			//good password
+			//unique username
 			//200
-			let auth_token = rooms.addAuthedClient(name)
+			let auth_token = addClient(room, username, roomName)
+			
 			log.info(`/join_room: new auth [${auth_token}]`)
-			res.cookie('token', auth_token, { maxAge: cookieMaxAge, sameSite: true});
+			res.cookie('token', auth_token, cookieParam);
 			res.status(200);
 		}
 		res.send()	
@@ -86,13 +106,16 @@ export function init(rooms, cfg, pLog){
 		rooms.killInactiveRoom()
 		var params = roomReqParamChecker(req)
 		if(!params){
-			log.warn(`/create_room: bad attempt [${req.query.name} ${req.query.passwd}]`)
+			log.warn(`/create_room: bad attempt \
+			[${req.query.room}|${req.query.passwd}|${req.query.name}]`)
 			res.status(400);
 			res.send()
+			return
 		}
-		var name = params[0]
+		var roomName = params[0]
 		var passwd = params[1]
-		if(rooms.roomExist(name)){
+		var username = params[2]
+		if(rooms.roomExist(roomName)){
 			//a room already exist with this name
 			//409
 			res.status(409);
@@ -100,11 +123,13 @@ export function init(rooms, cfg, pLog){
 		else{
 			//original room name
 			//201 a room has been created.
-			rooms.createRoom(name, passwd)
-			log.info(`/create_room: new room [${name} ${passwd}]`)
-			let auth_token = rooms.addAuthedClient(name)
+			let room = rooms.createRoom(roomName, passwd)
+			log.info(`/create_room: new room [${roomName} ${passwd}]`)
+
+			let auth_token = addClient(room, username, roomName)
 			log.debug(`/create_room: new auth [${auth_token}]`)
-			res.cookie('token', auth_token, { maxAge: cookieMaxAge, sameSite:true});
+
+			res.cookie('token', auth_token, cookieParam);
 			res.status(201);
 		}
 		res.send()	

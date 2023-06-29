@@ -1,9 +1,5 @@
 import { WebSocketServer } from 'ws';
 
-function sanInput(data){
-	return data.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
-}
-
 function parseToken (data){
 	let roomRE=/^[^~]+/
 	let roomID=roomRE.exec(data)[0]||""
@@ -32,12 +28,12 @@ export function init(rooms, cfg, pLog){
 			log.warn("no sender given in broadcast function")
 			return
 		}
-		sender.room.aClients.forEach(function(client){
-			if(client == sender){
+		sender.room.clients.forEach(function(value, key, map){
+			if(sender == value.ws){
 				return
 			}
-			client.send(data)
-		})
+			value.ws.send(data)
+		});
 		return
 	}
 	const interval = setInterval(function ping() {
@@ -76,29 +72,39 @@ export function init(rooms, cfg, pLog){
 				return
 			}
 			let parsed = parseToken(msg)
-			
-			if(rooms.checkAuthedClient(parsed[0], parsed[1])){
-				// we no longer need to parse the auth now
-				// start parsing this project API
-				ws.isAlive=true
-				ws.on('pong', heartBeat)
-				heartBeat()
-				ws.on('message', L3GBAAPIParsing)
-				ws.auth=true
-				ws.ready=0
-				
-				ws.room = rooms.getRoom(parsed[0])
-				ws.id = parsed[1]
-				log.info(`client [${ws.id}] auth valid in [${ws.room.name}]`)
-				ws.send("valid")
-				rooms.setActivityClient(ws, true)
-			}else{
+			var roomName = parsed[0]
+			var clientID = parsed[1] 
+			var room = rooms.getRoom(roomName)
+			if(!room || !room.hasID(clientID)){
 				ws.send("invalid")
 				ws.close()
-				return 
+				return
+			}else if(room.isAlreadyActive(clientID)){
+				ws.send("in use")
+				ws.close()
+				return
 			}
+			// the auth is valid
+			ws.room=room
+			ws.id=clientID
+			ws.username=room.getUsername(clientID)
+			ws.auth=true
+			ws.ready=false
 			
-			
+			ws.on('message', L3GBAAPIParsing)
+			log.info(`client [${clientID}] auth valid in [${roomName}]`)
+			//informs the client its auth is valid
+			ws.send("valid")
+			//this client is now considered valid
+			ws.room.addActiveClient(ws)
+			//informs roommates about a new joined player
+			wss.broadcast("j_"+ws.username, ws)
+			//informs the new joined player about roomates
+			ws.send("l_"+ws.room.getUserList())
+			//begin the check for aliveness
+			ws.isAlive=true
+			ws.on('pong', heartBeat)
+			heartBeat()
 		}
 		
 		ws.on('error', log.error);
@@ -110,7 +116,7 @@ export function init(rooms, cfg, pLog){
 				return
 				//bad auth
 			}
-			rooms.setActivityClient(ws, false)
+			ws.room.removeActiveClient(ws)
 			let bcMsg = "q_"+ws.username
 			wss.broadcast(bcMsg, ws)
 			if(ws.timedOut){
@@ -135,35 +141,6 @@ export function init(rooms, cfg, pLog){
 					break;
 				case "f":
 					wss.broadcast(msg, ws)
-					break;
-				case "n":
-					ws.username=sanInput(msg.substring(2).substring(0,20))
-					if(ws.username==undefined){
-						ws.username=="anonymUWUs"
-					}
-					
-					var number = 0
-					var connectedUsers=""
-					ws.room.aClients.forEach(function(client){
-						if(client==ws){
-							
-						}
-						else if(client.username==ws.username){
-							number++
-							ws.username=msg.substring(2)+number
-							connectedUsers+=client.username+client.ready+"~"
-						}else{
-							connectedUsers+=client.username+client.ready+"~"
-						}
-					})
-					//then we append
-					connectedUsers+=ws.username+"0"
-					//so first tell the client about his username
-					ws.send("n_"+ws.username)
-					//tell others a new fren has joined and which is not ready
-					wss.broadcast("j_"+ws.username, ws)
-					//answer back to the client with the list of active clients
-					ws.send("l_"+connectedUsers)
 					break;
 				case "r":
 					ws.ready=msg.substring(2)
