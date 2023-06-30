@@ -65,8 +65,14 @@ export class L3GBARoomList{
             this.log.warn(`couldn't retrieve save from ${this.saveFile}`)
             return
         }
-        this.fromRecover(JSON.parse(data))
-        this.log.info("recovered from save")
+        try{
+            this.fromRecover(JSON.parse(data))
+            this.log.info("recovered from save")
+        }
+        catch(e){
+            this.log.warm("Save wasn't retrievable")
+        }
+        
     }
     
     saveToFile(){

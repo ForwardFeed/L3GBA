@@ -111,6 +111,9 @@ export class L3GBAroom{
     areAllReady(){
         var flag = true;
         this.clients.forEach(function(value, key, map){
+            if(value.ws == null){
+                return
+            }
             if(value.ws.ready==false){
                 flag=false
             }

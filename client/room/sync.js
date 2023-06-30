@@ -3,7 +3,7 @@
 let wsAdd = "ws://" + location.hostname + ":9091"
 var socket 
 var clientUsername = localStorage.getItem("username")
-
+var onReconnect = false
 
 function Disconnected() {
 	let users = document.getElementById("users")
@@ -21,6 +21,8 @@ function Connected() {
 }
 
 function tryReconnect(){
+	document.getElementById("go").hidden = true
+	onReconnect = true
 	console.warn("trying to reconnect")
 	var button = document.getElementById("reconnect")
 	button.children[0].innerText="Trying to reconnect ..."
@@ -33,7 +35,17 @@ function tryReconnect(){
 	click this button to retry connection"
 	}, 1500);
 }
-
+function reconnected(){
+	let btn = document.getElementById("ready")
+	btn.innerHTML = "click to ready"
+	btn.classList.remove("ready")
+	btn.classList.add("unready")
+	btn.onclick = onClickReady
+	let user = document.getElementById("user-" + clientUsername)
+	user.classList.remove("user-ready")
+	user.classList.add("user-unready")
+	socket.send("r_0")
+}
 function onClickGo() {
 	let btn = document.getElementById("go")
 	socket.send("s")
@@ -143,6 +155,9 @@ let parseAuth = (msg) => {
 		socket.removeEventListener("message", parseAuth)
 		socket.addEventListener("message", L3GBAAPIParsing)
 		socket.send("a")
+		if(onReconnect){
+			reconnected()
+		}
 	} else if (data == "invalid") {
 		window.location.href = "/"
 	} else if (data == "in use") {
