@@ -47,6 +47,7 @@ export class L3GBAroom{
     }
 
     addAuthClient(username){
+        this.clearAuthForUsername(username)
         let id = this.getUniqueID()
         this.clients.set(id, new L3GBAClient(username))
         return id
@@ -59,6 +60,7 @@ export class L3GBAroom{
         }
         this.onUse=true
         this.aClientsCnt++
+        
         client.ws=ws
         return true
     }
@@ -89,11 +91,28 @@ export class L3GBAroom{
         return this.clients.has(id)
     }
 
+    clearAuthForUsername(username){
+        this.clients.forEach(function(value, key, map){
+            if(value.username==username){
+                map.delete(key)
+            }
+        });
+    }
     hasUsernameActive(username){
         var flag = false;
         this.clients.forEach(function(value, key, map){
             if(value.username==username && value.ws){
                 flag=true
+            }
+        });
+        return flag
+    }
+
+    areAllReady(){
+        var flag = true;
+        this.clients.forEach(function(value, key, map){
+            if(value.ws.ready==false){
+                flag=false
             }
         });
         return flag

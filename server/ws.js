@@ -9,8 +9,8 @@ function parseToken (data){
 }
 
 function areAllReady(room){
-	room.aClients.forEach(function(client){
-		if(!client.ready){
+	room.clients.forEach(function(client){
+		if(!client.ws.ready){
 			return false
 		}
 	})
@@ -148,7 +148,7 @@ export function init(rooms, cfg, pLog){
 					wss.broadcast("r_"+ws.username+msg.substring(2),ws)
 					break;
 				case "s":
-					if(areAllReady(ws.room)){
+					if(ws.room.areAllReady()){
 						ws.send("s")
 						wss.broadcast("s", ws)
 					}
@@ -166,7 +166,7 @@ export function init(rooms, cfg, pLog){
 					ws.send(retMsg)
 					break;
 				case "z":
-					if(areAllReady(ws.room)){
+					if(ws.room.areAllReady()){
 						ws.send(msg)
 						wss.broadcast(msg, ws)
 					}
