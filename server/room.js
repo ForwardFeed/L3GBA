@@ -63,7 +63,7 @@ export class L3GBAroom{
         return true
     }
 
-    removeActiveClient(id){
+    removeClient(id){
         let hasWorked = this.clients.delete(id)
         if(hasWorked){
             this.aClientsCnt--
@@ -74,6 +74,15 @@ export class L3GBAroom{
             return true
         }
         return false
+    }
+
+    removeActiveClient(id){
+        this.clients.get(id).ws=null
+        this.aClientsCnt--
+        if(this.aClientsCnt<=0){
+            this.lastActive=Date.now()
+            this.onUse=false
+        }
     }
     
     hasID(id){

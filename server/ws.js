@@ -39,6 +39,7 @@ export function init(rooms, cfg, pLog){
 	const interval = setInterval(function ping() {
 		wss.clients.forEach(function each(ws) {
 			if (ws.isAlive === false) {
+				ws.room.removeActiveClient(id)
 				return ws.terminate();
 			}
 			ws.isAlive = false;
@@ -116,11 +117,7 @@ export function init(rooms, cfg, pLog){
 				return
 				//bad auth
 			}
-			if( ws.room.removeActiveClient(ws.id)){
-				log.debug(`removed active client ${ws.id}`)
-			}else{
-				log.warn(`couldn't remove active client ${ws.id}`)
-			}
+			ws.room.removeActiveClient(ws.id)
 			let bcMsg = "q_"+ws.username
 			wss.broadcast(bcMsg, ws)
 			if(ws.timedOut){

@@ -1,8 +1,8 @@
 import express from 'express'; 
 import cookieParser from 'cookie-parser';
-import path from 'path'
-const __dirname = path.resolve(path.dirname(''));
+import path from 'path';
 
+const __dirname = path.resolve(path.dirname(''));
 
 function sanInput(data){
 	return data.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ0-9]/gim,"")
@@ -46,7 +46,7 @@ export function init(rooms, cfg, pLog){
 
 	http.use(cookieParser())
 	http.use(express.static('client'))
-	
+
 	const log = pLog.getLogger('http')
 	log.setLevel(cfg.http_loglevel)
 
