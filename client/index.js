@@ -21,6 +21,7 @@ var errorFeedBack = document.getElementById("err-room");
         xhttp.onreadystatechange = function() {
             if(this.readyState == 4 ){
                 if(this.status == 200){
+                    localStorage.setItem('username', username)
                     window.location.href='/room'
                 }else if(this.status == 404){
                     errorFeedBack.innerText="No room like this one"
@@ -30,6 +31,8 @@ var errorFeedBack = document.getElementById("err-room");
                     errorFeedBack.innerText="An user has already this username in the room"
                 }else if(this.status == 400){
                     errorFeedBack.innerText="Client and server seems to not agree on something O_O'"
+                }else if(this.status == 500){
+                    errorFeedBack.innerText="The server just died."
                 }
             }
         };
@@ -58,11 +61,14 @@ var errorFeedBack = document.getElementById("err-room");
         xhttp.onreadystatechange = function() {
             if(this.readyState == 4 ){
                 if(this.status == 201){
+                    localStorage.setItem('username', username)
                     window.location.href='/room'
                 }else if(this.status == 409){
                     errorFeedBack.innerText="A room with this name already exist"
                 }else if(this.status == 400){
                     errorFeedBack.innerText="Client and server seems to not agree on something O_O'"
+                }else if(this.status == 500){
+                    errorFeedBack.innerText="The server just died."
                 }
           }
         };

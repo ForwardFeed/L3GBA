@@ -2,7 +2,7 @@
 
 let wsAdd = "ws://" + location.hostname + ":9091"
 var socket 
-var clientUsername = ""
+var clientUsername = localStorage.getItem("username")
 
 
 function Disconnected() {
@@ -52,8 +52,8 @@ var onClickReady = () => {
 	btn.classList.remove("unready")
 	btn.onclick = onClickUnready
 	let user = document.getElementById("user-" + clientUsername)
-	user.classList.add("ready")
-	user.classList.remove("unready")
+	user.classList.add("user-ready")
+	user.classList.remove("user-unready")
 	socket.send("r_1")
 	checkAllReady()
 }
@@ -64,8 +64,8 @@ var onClickUnready = () => {
 	btn.classList.add("unready")
 	btn.onclick = onClickReady
 	let user = document.getElementById("user-" + clientUsername)
-	user.classList.remove("ready")
-	user.classList.add("unready")
+	user.classList.remove("user-ready")
+	user.classList.add("user-unready")
 	socket.send("r_0")
 	document.getElementById("go").hidden = true
 }
@@ -77,9 +77,9 @@ function addUser(username, flag) {
 		newUser.id = "user-" + name
 		newUser.innerText = name
 		if (username.substring(username.length - 1) == 0) {
-			newUser.className = "unready"
+			newUser.className = "user-unready"
 		} else {
-			newUser.className = "ready"
+			newUser.className = "user-ready"
 		}
 		div.append(newUser)
 	} else {
@@ -95,21 +95,19 @@ function setUserReady(username) {
 	let flag = username.substring(username.length - 1)
 	var name = username.substring(0, username.length - 1)
 	if (flag == 1) {
-		document.getElementById("user-" + name).className = "ready"
+		document.getElementById("user-" + name).className = "user-ready"
 	} else {
-		document.getElementById("user-" + name).className = "unready"
+		document.getElementById("user-" + name).className = "user-unready"
 	}
 	checkAllReady()
 
 }
 
 function checkAllReady() {
-	let users = document.getElementById("users")
-	for (let i = 0; i < users.children.length; i++) {
-		if (users.children[i].classList.contains("unready")) {
-			document.getElementById("go").hidden = true
-			return false
-		}
+	let users = document.getElementsByClassName("user-unready")
+	if(users.length>0){
+		document.getElementById("go").hidden = true
+		return false
 	}
 	document.getElementById("go").hidden = false
 	return true
@@ -171,7 +169,7 @@ let L3GBAAPIParsing = (data) => {
 			setPauseMenu(false, false)
 			break;
 		case "l":
-			let userArray = code.substring(2).split("~")
+			let userArray = code.substring(2, code.length-1).split("~")
 			for (let i = 0; i < userArray.length; i++) {
 				addUser(userArray[i], true)
 			}
@@ -187,6 +185,7 @@ let L3GBAAPIParsing = (data) => {
 			if (roomSettings[1] == 1) {
 				setPauseMenu(true, false)
 			}
+			checkAllReady()
 			break;
 		case "r":
 			setUserReady(code.substring(2))
@@ -224,6 +223,7 @@ function startSocketListening(){
 		Disconnected()
 	}
 }
+
 startSocketListening()
 
 

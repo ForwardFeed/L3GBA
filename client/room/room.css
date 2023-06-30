@@ -293,15 +293,12 @@ legend {
     padding-right: 4px;
 }
 
-#notif-msg {
-}
-
-.ready {
+.ready, .user-ready{
     background-color: aqua;
     color: #010105;
 }
 
-.unready {
+.unready, .user-unready{
     background-color: chocolate;
     color: #fdfdfd;
 }

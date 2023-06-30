@@ -31,8 +31,6 @@ feel free.
     - [x] index.html
     - [x] room.html
     - [x] an icon
-- [ ] Security
-    - [ ] rate limit the room creations
 - [ ] ServerSide
     - [x] prevent spamming key (bug fixed)
     - [x] basic logging system
@@ -49,7 +47,7 @@ feel free.
     - [x] turbo mode
 - [ ] room settings
     - [x] turbo mode speed
-    - [ ] set a tooltip for room settings
+    - [x] set a tooltip for room settings
     - [x] pause on disconnect/reconnect
     - [ ] lag input for sync improvement
     - [ ] notify if clients aren't using the same file
