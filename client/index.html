@@ -3,14 +3,14 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
+        <title>L3GBA Input-shared multiplayer gba emulator</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
     </head>
     <body>
-        <div class="cookies">
-
-        </div>
+        
         <header>
             <div class="header-title">
-                <h1>L3GBA</h1>
+                <img src="logo.png"/>
                 <p>Input-shared multiplayer gba emulator</p> 
             </div>
             
@@ -21,7 +21,13 @@
                 </div>
             </div>
         </header>
-        <div class="room-div">
+        <div id="cookies" class="room-div">
+            <legend> This website require the uses of cookies for basic functions, please accept them </legend>
+            <button class="cookie-blue" onclick="AcceptCookies('yes')"> Accept cookies</button>
+            <button class="cookie-red" onclick="AcceptCookies('yes')"> Accept cookies but in red</button>
+            <button class="cookie-blue" onclick="AcceptCookies('no')"> Refuse cookies </button>
+        </div>
+        <div id="room-div" class="room-div" hidden>
             <div class="create-room-div">
                 <label for="create-room-name">Room name</label>
                 <input id="create-room-name" type="text" name="create-room-name" placeholder="room name">
@@ -80,6 +86,7 @@
             "GBA" is a trademark of Nintendo Co.,Ltd, This site is not associated with Nintendo in any way.
         </footer>
     </body>
+    <script src="cookies.js"></script>
     <script src="tabs.js"></script>
     <script src="index.js"></script>
 </html>

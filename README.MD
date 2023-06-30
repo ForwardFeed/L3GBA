@@ -27,10 +27,10 @@ concerning the emulator/wasm part made by 44670, i've builded it myself then fee
 feel free.
 
 ## TODO LIST
-- [ ] improvement front end
+- [x] improvement front end
     - [x] index.html
     - [x] room.html
-    - [ ] an icon
+    - [x] an icon
 - [ ] Security
     - [ ] rate limit the room creations
 - [ ] ServerSide
@@ -60,6 +60,7 @@ feel free.
     - [ ] a force resync where one player share its gamestate (384 kb i believe)
     - [ ] sharing savefiles (max: 512kb )
     - [x] prevent the player to missclick into leaving the room
-- [ ] add warning for unsupported harware on the main page.
+- [ ] add warning for unsupported X on the main page.
     - [x] wasm
     - [ ] gamepad
+    - [ ] localstorage

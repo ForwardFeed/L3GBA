@@ -167,3 +167,17 @@ footer {
     background-color: #485859;
     font-size: medium;
 }
+#cookies{
+    background-color: #485859;
+}
+#cookies>*{
+    padding: 20px;
+    font-size: larger;
+}
+.cookie-blue{
+    background-color: #1D6F75;
+}
+
+.cookie-red{
+    background-color: #cc231d;
+}
