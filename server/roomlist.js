@@ -7,7 +7,7 @@ export class L3GBARoomList{
 	    this.log.setLevel(cfg.ws_loglevel)
         this.roomMap= new Map()
         this.saveFile=cfg.savefile
-        this.saveInterval = 60*1000
+        this.saveInterval = 60*100
         fs.readFile(this.saveFile,'utf8', (e,h)=>{this.retrieveFromSave(e,h)})
         this.interval = setTimeout(()=>{this.saveToFile()}, this.saveInterval)
 
@@ -52,10 +52,10 @@ export class L3GBARoomList{
     }
     fromRecover(data){
         for(let i=0;i<data.length;i++){
-            let roomName = data[i][1][0]
-            let passwd = data[i][1][1]
+            let roomName = data[i][0]
+            let passwd = data[i][1]
             let room = new L3GBAroom(roomName, passwd)
-            room.fromRecover(data[i][1][2])
+            room.fromRecover(data[i][2])
             this.roomMap.set(roomName,room)
         }
     }
@@ -70,14 +70,14 @@ export class L3GBARoomList{
             this.log.info("recovered from save")
         }
         catch(e){
-            this.log.warm("Save wasn't retrievable")
+            this.log.warn("Save wasn't retrievable")
         }
         
     }
     
     saveToFile(){
         let recoverableData = this.toRecoverable(this.roomMap)
-        fs.writeFile(this.saveFile,JSON.stringify([...recoverableData.entries()]),'utf8', (err)=>{
+        fs.writeFile(this.saveFile,JSON.stringify(recoverableData),'utf8', (err)=>{
             if(err){
                 this.log.err(`couldn't save to ${this.saveFile}`)
             }
