@@ -3,7 +3,6 @@
     "http_port" : 9093,
     "ws_port"   : 9094,
     
-    "loglevel"          : "warn",
     "http_loglevel"     : "warn",
     "ws_loglevel"       : "warn",
     "rooms_loglevel"    : "warn",

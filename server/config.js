@@ -106,11 +106,6 @@ export function verify(cfg,logger,flag){
             isNonCritical=false
         }
     }
-    if(!cfg.loglevel){
-        logger.warn("config.verify:     missing loglevel")
-        logger.warn("setting loglevel to warn")
-        cfg.loglevel="warn"
-    }
     if(!cfg.http_loglevel){
         logger.warn("config.verify:     missing http_loglevel")
         logger.warn("setting http_loglevel to warn")

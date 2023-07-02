@@ -38,7 +38,6 @@ feel free.
     - [x] save externally room states to recover from server crashes & restart.
     - [x] heartbeat
     - [x] config file
-    - [ ] an https mode
 - [ ] hardware porting
     - [ ] test gamepad
     - [x] test touchpad
