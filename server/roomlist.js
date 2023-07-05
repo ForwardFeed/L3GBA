@@ -7,7 +7,7 @@ export class L3GBARoomList{
 	    this.log.setLevel(cfg.ws_loglevel)
         this.roomMap= new Map()
         this.saveFile=cfg.savefile
-        this.saveInterval = 60*100
+        this.saveInterval = 60*1000
         fs.readFile(this.saveFile,'utf8', (e,h)=>{this.retrieveFromSave(e,h)})
         this.interval = setTimeout(()=>{this.saveToFile()}, this.saveInterval)
 

@@ -3,6 +3,7 @@
 let wsAdd = "ws://" + location.hostname + ":9091"
 var socket 
 var clientUsername = localStorage.getItem("username")
+var clientNumber;
 var onReconnect = false
 
 function Disconnected() {
@@ -41,7 +42,7 @@ function reconnected(){
 	btn.classList.remove("ready")
 	btn.classList.add("unready")
 	btn.onclick = onClickReady
-	let user = document.getElementById("user-" + clientUsername)
+	let user = document.getElementById("user-" + clientNumber)
 	user.classList.remove("user-ready")
 	user.classList.add("user-unready")
 	socket.send("r_0")
@@ -63,7 +64,7 @@ var onClickReady = () => {
 	btn.classList.add("ready")
 	btn.classList.remove("unready")
 	btn.onclick = onClickUnready
-	let user = document.getElementById("user-" + clientUsername)
+	let user = document.getElementById("user-" + clientNumber)
 	user.classList.add("user-ready")
 	user.classList.remove("user-unready")
 	socket.send("r_1")
@@ -81,21 +82,26 @@ var onClickUnready = () => {
 	socket.send("r_0")
 	document.getElementById("go").hidden = true
 }
-function addUser(username, flag) {
-	let div = document.getElementById("users")
+function addUser(userinfo, flag) {
+	var username=userinfo[0]
+	var userNumber = userinfo[1].substring(0, userinfo[1].length - 1);
+	var status = userinfo[1].substring(userinfo[1].length - 1)
+	var div = document.getElementById("users")
+	if(username == clientUsername){
+		clientNumber = userNumber
+	}
 	if (flag) {
-		let name = username.substring(0, username.length - 1)
 		let newUser = document.createElement("span")
-		newUser.id = "user-" + name
-		newUser.innerText = name
-		if (username.substring(username.length - 1) == 0) {
+		newUser.id = "user-" + userNumber
+		newUser.innerText = username
+		if (status == 0) {
 			newUser.className = "user-unready"
 		} else {
 			newUser.className = "user-ready"
 		}
 		div.append(newUser)
 	} else {
-		let child = document.getElementById("user-" + username)
+		let child = document.getElementById("user-" + userNumber)
 		if (child) {
 			div.removeChild(child)
 		}
@@ -154,7 +160,7 @@ let parseAuth = (msg) => {
 	if (data == "valid") {
 		socket.removeEventListener("message", parseAuth)
 		socket.addEventListener("message", L3GBAAPIParsing)
-		socket.send("a")
+		socket.send("g")
 		if(onReconnect){
 			reconnected()
 		}
@@ -186,17 +192,18 @@ let L3GBAAPIParsing = (data) => {
 		case "l":
 			let userArray = code.substring(2, code.length-1).split("~")
 			for (let i = 0; i < userArray.length; i++) {
-				addUser(userArray[i], true)
+				let userInfo = userArray[i].split("#")
+				addUser(userInfo ,true)
 			}
 			break;
 		case "q":
-			addUser(code.substring(2), false)
+			addUser(code.substring(2).split("#"), false)
 			if (roomSettings[2] == 1) {
 				setPauseMenu(true, false)
 			}
 			break;
 		case "j":
-			addUser(code.substring(2) + "0", true)
+			addUser(code.substring(2).split("#"), true)
 			if (roomSettings[1] == 1) {
 				setPauseMenu(true, false)
 			}

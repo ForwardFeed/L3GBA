@@ -16,6 +16,7 @@ export class L3GBAroom{
         // array [string, string, object ,bool]
         this.clients=new Map()
         this.aClientsCnt = 0; //active client count
+        this.clientNumber = 0;
     }
 
     hasExpired(){
@@ -62,6 +63,7 @@ export class L3GBAroom{
         this.aClientsCnt++
         
         client.ws=ws
+        client.ws.number = this.clientNumber++;
         return true
     }
 
@@ -133,7 +135,7 @@ export class L3GBAroom{
                 return
             }
             let r = val.ws.ready ? 1 : 0
-            userList+=val.username+r+"~"
+            userList+=val.username+"#"+val.ws.number+r+"~"
         });
         return userList
     }

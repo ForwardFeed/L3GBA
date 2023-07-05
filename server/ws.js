@@ -8,16 +8,6 @@ function parseToken (data){
 	return [roomID, token]
 }
 
-function areAllReady(room){
-	room.clients.forEach(function(client){
-		if(!client.ws.ready){
-			return false
-		}
-	})
-	return true
-}
-
-
 export function init(rooms, cfg, pLog){
 	const log = pLog.getLogger('ws')
 	log.setLevel(cfg.ws_loglevel)
@@ -43,9 +33,10 @@ export function init(rooms, cfg, pLog){
 				return ws.terminate();
 			}
 			ws.isAlive = false;
+			ws.beforePing=Date.now()
 			ws.ping();
 		});
-	}, 30000);
+	}, 6000);
 	  
 	wss.on('close', function close() {
 		clearInterval(interval);
@@ -56,6 +47,7 @@ export function init(rooms, cfg, pLog){
 
 		let heartBeat = () =>{
 			ws.isAlive=true
+			ws.latency = Date.now() - ws.beforePing
 		}
 
 		let clientAuth = (data)=>{
@@ -96,16 +88,6 @@ export function init(rooms, cfg, pLog){
 			log.info(`client [${clientID}] auth valid in [${roomName}]`)
 			//informs the client its auth is valid
 			ws.send("valid")
-			//this client is now considered valid
-			ws.room.addActiveClient(ws)
-			//informs roommates about a new joined player
-			wss.broadcast("j_"+ws.username, ws)
-			//informs the new joined player about roomates
-			ws.send("l_"+ws.room.getUserList())
-			//begin the check for aliveness
-			ws.isAlive=true
-			ws.on('pong', heartBeat)
-			heartBeat()
 		}
 		
 		ws.on('error', log.error);
@@ -118,7 +100,8 @@ export function init(rooms, cfg, pLog){
 				//bad auth
 			}
 			ws.room.removeActiveClient(ws.id)
-			let bcMsg = "q_"+ws.username
+			let status = ws.ready?1:0
+			let bcMsg = "q_"+ws.username+"#"+ws.number+status
 			wss.broadcast(bcMsg, ws)
 			if(ws.timedOut){
 				log.info(`client ${ws.id} timed out`)
@@ -170,6 +153,22 @@ export function init(rooms, cfg, pLog){
 						ws.send(msg)
 						wss.broadcast(msg, ws)
 					}
+					break;
+				case "g":
+					// prevent a malicious user from abusing
+					if(ws.number){
+						return
+					}
+					//add to the room and assignate a client number
+					ws.room.addActiveClient(ws)
+					//informs roommates about a new joined player
+					wss.broadcast("j_"+ws.username+"#"+ws.number+"0", ws)
+					//informs the new joined player about roomates
+					ws.send("l_"+ws.room.getUserList())
+					//begin the check for aliveness
+					ws.isAlive=true
+					ws.beforePing=Date.now()
+					ws.on('pong', heartBeat)
 					break;
 				default:
 					log.warn("L3GBAPI : unknown client message %s", data)
