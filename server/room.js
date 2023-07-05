@@ -163,5 +163,37 @@ export class L3GBAroom{
             this.clients.set(id, client)
         }
     }
+
+    pingRoutine(){
+        var msg = this.pingL3GBAPI()
+        this.clients.forEach(function(value, key, map){
+            if(value.ws == null){
+                return
+            }
+            var ws = value.ws
+            if (ws.isAlive === false) {
+				ws.room.removeActiveClient(ws.id)
+				return ws.terminate();
+			}
+			ws.isAlive = false;
+			ws.beforePing=Date.now()
+			ws.ping();
+            ws.send(msg)
+        });
+        
+        return 
+    }
+    // return the message to be send to clients
+    pingL3GBAPI(){
+        var msg = "p_"
+        this.clients.forEach(function(value, key, map){
+            if(value.ws == null){
+                return
+            }
+            let latency = value.ws.latency || ""
+            msg+=value.ws.number+"#"+latency+"~"
+        });
+        return msg
+    }
 }
 

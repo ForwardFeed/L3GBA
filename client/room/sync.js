@@ -131,6 +131,14 @@ function checkAllReady() {
 	return true
 }
 
+function showPing(usersInfo){
+	let userArray = usersInfo.split("~")
+	for (let i = 0; i < userArray.length-1; i++) {
+		let usersInfo = userArray[i].split("#")
+		console.log(usersInfo)
+	}
+}
+
 function getCookie(cookiename) {
 	// Get name followed by anything except a semicolon
 	var cookiestring = RegExp(cookiename + "=[^;]+").exec(document.cookie);
@@ -228,6 +236,9 @@ let L3GBAAPIParsing = (data) => {
 			break;
 		case "z":
 			startEmulation()
+			break;
+		case "p":
+			showPing(code.substring(2))
 			break;
 		default:
 			console.warn("API wise unknown server message %s", code)

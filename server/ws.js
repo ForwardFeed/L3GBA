@@ -26,17 +26,9 @@ export function init(rooms, cfg, pLog){
 		});
 		return
 	}
-	const interval = setInterval(function ping() {
-		wss.clients.forEach(function each(ws) {
-			if (ws.isAlive === false) {
-				ws.room.removeActiveClient(id)
-				return ws.terminate();
-			}
-			ws.isAlive = false;
-			ws.beforePing=Date.now()
-			ws.ping();
-		});
-	}, 6000);
+	const interval = setInterval(()=>{
+		rooms.pingRoutine()
+	}, 8000);
 	  
 	wss.on('close', function close() {
 		clearInterval(interval);

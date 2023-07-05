@@ -91,4 +91,13 @@ export class L3GBARoomList{
         this.saveToFile()
         this.interval = setTimeout(()=>{this.saveToFile()}, this.saveInterval)
     }
+
+    pingRoutine(){
+        for (const [key, val] of this.roomMap){
+            if(!val.onUse){
+                continue
+            }
+            val.pingRoutine()
+        }
+    }
 }
