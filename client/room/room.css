@@ -373,6 +373,12 @@ legend {
     visibility: visible;
 }
 
+.input[type="range"] {
+	background-color: gray;
+	height: 20px;
+	border-radius: 15px;
+	padding: 0 3px;
+}
 
 #gba-canvas {
     position: absolute;
