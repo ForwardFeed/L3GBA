@@ -118,7 +118,7 @@ class L3GBAInputs{
         }
     }
     handleTouch(event){
-        tryInitSound()
+        //tryInitSound()
         
         if (!isRunning) {
             return

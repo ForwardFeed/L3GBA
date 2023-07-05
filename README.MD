@@ -52,8 +52,8 @@ feel free.
     - [ ] lag input for sync improvement
     - [ ] notify if clients aren't using the same file
     - [x] implement join in middle of active room
-- [ ] client settings
-    - [ ] sound volume
+- [x] client settings
+    - [x] sound volume
 - [ ] room features
     - [ ] a force resync where one player share its gamestate (384 kb i believe)
     - [ ] sharing savefiles (max: 512kb )

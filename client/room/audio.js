@@ -6,7 +6,7 @@ var audioFifo0 = new Int16Array(AUDIO_FIFO_MAXLEN)
 var audioFifo1 = new Int16Array(AUDIO_FIFO_MAXLEN)
 var audioFifoHead = 0
 var audioFifoCnt = 0
-
+var VolumeAudio
 
 function processAudio(event) {
     var outputBuffer = event.outputBuffer
@@ -47,9 +47,10 @@ function tryInitSound() {
     }
     try {
         audioContext = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 0.0001, sampleRate: 48000 });
+        VolumeAudio = audioContext.createGain();
         scriptProcessor = audioContext.createScriptProcessor(AUDIO_BLOCK_SIZE, 0, 2)
         scriptProcessor.onaudioprocess = processAudio
-        scriptProcessor.connect(audioContext.destination)
+        scriptProcessor.connect(VolumeAudio).connect(audioContext.destination);
 
         audioContext.resume()
     } catch (e) {
@@ -80,3 +81,12 @@ function writeAudio(ptr, frames) {
     }
     audioFifoCnt += frames
 }
+
+let volumeControl = document.getElementById("volume");
+volumeControl.addEventListener(
+  "input",
+  () => {
+    VolumeAudio.gain.value = volumeControl.value;
+  },
+  false
+);

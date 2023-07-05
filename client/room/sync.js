@@ -134,7 +134,6 @@ function showPing(usersInfo){
 	let userArray = usersInfo.split("~")
 	for (let i = 0; i < userArray.length-1; i++) {
 		let usersInfo = userArray[i].split("#")
-		console.log(usersInfo)
 	}
 }
 
