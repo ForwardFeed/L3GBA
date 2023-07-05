@@ -1,6 +1,5 @@
-
-
-let wsAdd = "ws://" + location.hostname + ":9091"
+let addPort = Number(location.port)+1 || '' //default?
+var wsAdd = "ws://" + location.hostname + ":" + addPort
 var socket 
 var clientUsername = localStorage.getItem("username")
 var clientNumber;
