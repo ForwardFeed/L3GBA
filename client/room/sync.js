@@ -1,9 +1,13 @@
 let addPort = Number(location.port)+1 || '' //default?
 var wsAdd = "ws://" + location.hostname + ":" + addPort
 var socket 
+var onReconnect = false
+
 var clientUsername = localStorage.getItem("username")
 var clientNumber;
-var onReconnect = false
+var clientLatency = 0
+
+var roomClients = new Map()
 
 function Disconnected() {
 	let users = document.getElementById("users")
@@ -75,7 +79,7 @@ var onClickUnready = () => {
 	btn.classList.remove("ready")
 	btn.classList.add("unready")
 	btn.onclick = onClickReady
-	let user = document.getElementById("user-" + clientUsername)
+	let user = document.getElementById("user-" + clientNumber)
 	user.classList.remove("user-ready")
 	user.classList.add("user-unready")
 	socket.send("r_0")
@@ -88,6 +92,17 @@ function addUser(userinfo, flag) {
 	var div = document.getElementById("users")
 	if(username == clientUsername){
 		clientNumber = userNumber
+	}else{
+		if(roomClients.has(userNumber) && flag){
+			console.warn("asked to add two same client number")
+		}else if(roomClients.has(userNumber) && !flag){
+			roomClients.delete(userNumber)
+		}else if(!roomClients.has(userNumber) && flag){
+			// i for now only store ping 
+			roomClients.set(userNumber, 0)
+		}else{
+			console.warn("asked to remove a non-existent client")
+		}	
 	}
 	if (flag) {
 		var frag = new DocumentFragment()
@@ -119,12 +134,17 @@ function addUser(userinfo, flag) {
 }
 
 function setUserReady(username) {
+	console.log(username)
 	let flag = username.substring(username.length - 1)
 	var name = username.substring(0, username.length - 1)
 	if (flag == 1) {
-		document.getElementById("user-" + name).className = "user-ready"
+		let user = document.getElementById("user-" + name)
+		user.classList.add("user-ready")
+		user.classList.remove("user-unready")
 	} else {
-		document.getElementById("user-" + name).className = "user-unready"
+		let user = document.getElementById("user-" + name)
+		user.classList.remove("user-ready")
+		user.classList.add("user-unready")
 	}
 	checkAllReady()
 
@@ -141,11 +161,18 @@ function checkAllReady() {
 }
 
 function showPing(usersInfo){
-	let userArray = usersInfo.split("~")
-	for (let i = 0; i < userArray.length-1; i++) {
-		let userInfo = userArray[i].split("#")
-		let pingSpan = document.getElementById("ping-"+userInfo[0])
-		pingSpan.innerText=userInfo[1]
+	let userArray = usersInfo.substring(0,usersInfo.length-1).split("~")
+	for (let i = 0; i < userArray.length; i++) {
+		let userInfoPing = userArray[i].split("#")
+		let userNumber = userInfoPing[0]
+		let userPing = userInfoPing[1]||"0"
+		if(userNumber == clientNumber){
+			clientLatency = userPing
+		}else{
+			roomClients.set(userNumber, userPing)
+		}
+		let pingSpan = document.getElementById("ping-"+userNumber)
+		pingSpan.innerText=userPing
 	}
 }
 

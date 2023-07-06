@@ -187,9 +187,8 @@ function startEmulation(){
     loadSaveGame(0, function () {
         Module._emuResetCpu()
         applyCheatCode()
-        //alert('cheat code loaded')
-        //removed cheating ability so far
         isRunning = true
+        inputs.adjustSize()
         
     })
 }
@@ -334,6 +333,7 @@ function setTurboMode(t) {
     @broadcast bool, relay to other client or not
 */
 function setPauseMenu(t, broadcast) {
+    inputs.setLagSyncMode(roomSettings[5])
 	if(t && broadcast){
 		socket.send("o")
 	}else if(!t  && broadcast){

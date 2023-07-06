@@ -50,11 +50,11 @@
                     <div class="room-set tooltip" >
                         <span class="tooltiptext">skip X number of frame</span>
                         <input type="number" name="seturbospeed" id="seturbospeed"
-                        min="2" max="9" value="2" tooltip="">
+                        min="2" max="9" value="2">
                         <label for="seturbospeed">Set turbo speed</label>
                     </div>
-                    <div class="room-set" hidden>
-                        <input type="checkbox" name="setlaginput" id="setlaginput" tooltip="">
+                    <div class="room-set">
+                        <input type="checkbox" name="setlaginput" id="setlaginput">
                         <label for="setlaginput">Lag input for sync</label>
                     </div>
                     
@@ -110,6 +110,9 @@
                                 <button class="btn-set-key key-act" data-key="r">R </button>
                                 <button class="btn-set-key key-sup" data-key="start">START </button> 
                             </div>
+                        </div>
+                        <div id="kb-set-info" hidden>
+                            press a buttton to change the keybind
                         </div>
                     </div>
                     <div class="save-half-body">

@@ -20,6 +20,7 @@ class L3GBAInputs{
             'right': 15
         }
         this.keyChange=-1
+        this.lagSyncMode = false
     }
     init(){
         // fetch config from local host
@@ -67,8 +68,8 @@ class L3GBAInputs{
             e.preventDefault()
         }
             
-        window.onresize = this.adjustSize
-        window.onorientationchange = this.adjustSize
+        window.onresize = ()=>{this.adjustSize()}
+        window.onorientationchange = ()=>{this.adjustSize()}
     }
     initKB(){
         this.keymapButtons()
@@ -209,7 +210,6 @@ class L3GBAInputs{
         l += (window.innerWidth - gbaWidth) / 2;
         canvas.style = 'width:' + gbaWidth + 'px;height:' + gbaHeight + 'px;left:' + l + 'px;'
         this.adjustVKLayout()
-        adjustSize()
     }
 
     adjustVKLayout() {
@@ -337,13 +337,17 @@ class L3GBAInputs{
     @index index of the keystate array
     @value, int 1or0 string "down" or "up"
     @flag, if false don't broadcast
+    @selfCallBack, for lag input purposes
 
     */
-    setKeyState(k, index, value, flag){
+    setKeyState(k, index, value, flag, selfCallback){
         if(k == undefined || index == undefined || value == undefined){
             console.warn("missuse of the L3GBAInputs::Keystate bad params: \
             k:%s , i:%s , val:%s", k, index, value)
             return
+        }
+        if(this.lagSyncMode && !selfCallback){
+            this.syncLagInput(()=>{this.setKeyState(k, index, value, flag, true)})
         }
         if(typeof k == 'number'){
             if(k==10){
@@ -411,7 +415,8 @@ class L3GBAInputs{
     hookKey(e){
         this.keymap[this.keyChange]=e.keyCode
         this.keycodemap[this.keyChange]=e.key
-        document.getElementById("kb-settings").children[0].innerText="Keybind settings"
+        document.getElementById("kb-set").style.display = "flex"
+        document.getElementById("kb-set-info").style.display = "none"
         this.saveConfig()
         this.keymapButtons()
         document.onkeydown = (e)=>{this.normalKeyDown(e)}
@@ -430,7 +435,8 @@ class L3GBAInputs{
         }
     }
     setBtn(ev){
-        document.getElementById("kb-settings").children[0].innerText="Press a key"
+        document.getElementById("kb-set").style.display = "none"
+        document.getElementById("kb-set-info").style.display = "inherit"
         var keyChange=-1
         switch(ev.target.getAttribute("data-key")){
         case 'a': 
@@ -476,7 +482,22 @@ class L3GBAInputs{
         document.onkeydown = (e)=>{this.hookKey(e)}
         document.onkeyup = ""
     }
-    
+    setLagSyncMode(flag){
+        if(flag){
+            this.lagSyncMode = true
+        }else{
+            this.lagSyncMode = false
+        }   
+    }
+    syncLagInput(callback){
+        var highest = 0
+        roomClients.forEach(function(val, key, map){
+            if(val > highest){
+                highest = val
+            }
+        });
+        setTimeout(callback, highest)
+    }
 }
 
 /*  H

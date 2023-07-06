@@ -18,6 +18,8 @@ delimiter too,
 | room reset   | z                  | reset for everyone the emulator                                          |
 | users ping   | p_n#l~n#l          | list all user by number and their latency                                |
 | client good  | g                  | client received its auth and implicitely ask an update of the room       |
+|              |                    |                                                                          |
+|              |                    |                                                                          |
 
 | name         | server sent?| client sent?| server answers?| client answers?|server broadcast?|
 |--------------|-------------|-------------|----------------|----------------|-----------------|
@@ -35,3 +37,5 @@ delimiter too,
 | room reset   | no          | yes         | no             | no             |  yes            |
 | users ping   | yes         | no          | no             | no             |  no             |
 | client good  | no          | yes         | implicitely    | no             |  no             |
+|              |             |             |                |                |                 |
+|              |             |             |                |                |                 |

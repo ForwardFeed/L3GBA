@@ -39,7 +39,9 @@ export function init(rooms, cfg, pLog){
 
 		let heartBeat = () =>{
 			ws.isAlive=true
-			ws.latency = Date.now() - ws.beforePing
+			let now = Date.now() 
+			ws.latency = Math.floor((now - ws.beforePing)/2)
+			ws.beforePing=now
 		}
 
 		let clientAuth = (data)=>{
@@ -120,7 +122,7 @@ export function init(rooms, cfg, pLog){
 					break;
 				case "r":
 					ws.ready=msg.substring(2)
-					wss.broadcast("r_"+ws.username+msg.substring(2),ws)
+					wss.broadcast("r_"+ws.number+msg.substring(2),ws)
 					break;
 				case "s":
 					if(ws.room.areAllReady()){
