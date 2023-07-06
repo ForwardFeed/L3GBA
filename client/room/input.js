@@ -60,7 +60,7 @@ class L3GBAInputs{
             var k = vk.getAttribute('data-k') //a, left, turbo...
             this.keyState[k] = [vk, 0, 0]
         }
-        ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'touchenter', 'touchleave'].forEach((val) => {
+        ['touchstart', 'touchend'].forEach((val) => {
             window.addEventListener(val, (e)=>{this.handleTouch(e)})
         })
         
@@ -123,11 +123,14 @@ class L3GBAInputs{
     }
     handleTouch(event){
         //tryInitSound()
+        document.getElementById('kb-set').style.display = "none"
+
         if (!isRunning) {
             return
         }
         document.getElementById('vk-layer').hidden = false
         document.getElementById('pause').hidden = true
+        
         event.preventDefault();
         event.stopPropagation();
 
@@ -136,33 +139,39 @@ class L3GBAInputs{
                 this.keyState[k][2]=0
             }
         }
-        for (var i = 0; i < event.touches.length; i++) {
-            var t = event.touches[i];
-            var dom = document.elementFromPoint(t.clientX, t.clientY)
-            if (dom) {
-                var k = dom.getAttribute('data-k')
-                if (k) {
-                    if(!k){
-                        return
-                    }
-                    if (k == 'ul') {
-                        this.setKeyState("up",2,1,true)
-                        this.setKeyState("left",2,1,true)
-                    } else if (k == 'ur') {
-                        this.setKeyState("up",2,1,true)
-                        this.setKeyState("right",2,1,true)
-                    } else if (k == 'dl') {
-                        this.setKeyState("down",2,1,true)
-                        this.setKeyState("left",2,1,true)
-                    } else if (k == 'dr') {
-                        this.setKeyState("down",2,1,true)
-                        this.setKeyState("right",2,1,true)
-                    }else{
-                        this.setKeyState(k,2,1,true)
-                    }
+        var dom = event.target
+        if (dom) {
+            var k = dom.getAttribute('data-k')
+            if (k) {
+                if(!k){
+                    return
+                }
+                var type = event.type
+                if(type=="touchstart"){
+                    type = 1
+                }else if(type=="touchend"){
+                    type = 0
+                }else{
+                    return
+                }
+                if (k == 'ul') {
+                    this.setKeyState("up",2,type,true)
+                    this.setKeyState("left",2,type,true)
+                } else if (k == 'ur') {
+                    this.setKeyState("up",2,type,true)
+                    this.setKeyState("right",2,type,true)
+                } else if (k == 'dl') {
+                    this.setKeyState("down",2,type,true)
+                    this.setKeyState("left",2,type,true)
+                } else if (k == 'dr') {
+                    this.setKeyState("down",2,type,true)
+                    this.setKeyState("right",2,type,true)
+                }else{
+                    this.setKeyState(k,2,type,true)
                 }
             }
         }
+        
         for (var k in this.keyState) {
             if (this.keyState[k][1] != this.keyState[k][2]) {
                 var dom = this.keyState[k][0]

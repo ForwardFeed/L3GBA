@@ -255,7 +255,6 @@ function emuRunFrame() {
                     fps = 1000 / frameInMs
                 }
                 console.log('fps', fps)
-                console.log(this.roomSettings)
             }
             last128FrameTime = performance.now()
 

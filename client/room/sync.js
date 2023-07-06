@@ -41,7 +41,7 @@ function tryReconnect(){
 }
 function reconnected(){
 	let btn = document.getElementById("ready")
-	btn.innerHTML = "click to ready"
+	btn.innerHTML = "set ready"
 	btn.classList.remove("ready")
 	btn.classList.add("unready")
 	btn.onclick = onClickReady
@@ -51,9 +51,10 @@ function reconnected(){
 	socket.send("r_0")
 }
 function onClickGo() {
+	document.getElementById("return").hidden = false
 	let btn = document.getElementById("go")
 	socket.send("s")
-	btn.innerText = "reset emulator"
+	btn.innerText = "reset"
 	btn.onclick = onClickReset
 }
 
@@ -63,7 +64,7 @@ function onClickReset() {
 
 var onClickReady = () => {
 	let btn = document.getElementById("ready")
-	btn.innerHTML = "click to unready"
+	btn.innerText = "set unready"
 	btn.classList.add("ready")
 	btn.classList.remove("unready")
 	btn.onclick = onClickUnready
@@ -75,7 +76,7 @@ var onClickReady = () => {
 }
 var onClickUnready = () => {
 	let btn = document.getElementById("ready")
-	btn.innerHTML = "click to ready"
+	btn.innerText = "set ready"
 	btn.classList.remove("ready")
 	btn.classList.add("unready")
 	btn.onclick = onClickReady
@@ -261,7 +262,7 @@ let L3GBAAPIParsing = (data) => {
 			if (!isRunning) {
 				startEmulation()
 				let btn = document.getElementById("go")
-				btn.innerText = "reset emulator"
+				btn.innerText = "Reset"
 				btn.onclick = onClickReset
 			}
 			break
