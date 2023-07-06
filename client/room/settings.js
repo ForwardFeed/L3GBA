@@ -103,8 +103,9 @@ function initCheckBoxes(){
     }
     setting = document.getElementById("seturbospeed")
     setting.onchange=(ev)=>{
-        socket.send("x_4"+setting.value)
-        roomSettings[4]=setting.value
+        socket.send("x_4"+ev.target.value)
+        console.log(ev.target.value)
+        roomSettings[4]=ev.target.value
     }
     setting = document.getElementById("setlaginput")
     setting.onchange=(ev)=>{

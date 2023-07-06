@@ -123,28 +123,28 @@ class L3GBAInputs{
     }
     handleTouch(event){
         //tryInitSound()
-        
         if (!isRunning) {
             return
         }
+        document.getElementById('vk-layer').hidden = false
+        document.getElementById('pause').hidden = true
         event.preventDefault();
         event.stopPropagation();
 
-        document.getElementById('vk-layer').hidden = false
         for (var k in this.keyState) {
             if(this.keyState[k][2]!=0){
-                this.setKeyState(k,2,0,true)
-            }else{
-                this.setKeyState(k,2,0,false)
+                this.keyState[k][2]=0
             }
         }
-        
         for (var i = 0; i < event.touches.length; i++) {
             var t = event.touches[i];
             var dom = document.elementFromPoint(t.clientX, t.clientY)
             if (dom) {
                 var k = dom.getAttribute('data-k')
                 if (k) {
+                    if(!k){
+                        return
+                    }
                     if (k == 'ul') {
                         this.setKeyState("up",2,1,true)
                         this.setKeyState("left",2,1,true)
@@ -162,12 +162,6 @@ class L3GBAInputs{
                     }
                 }
             }
-        }
-        if (this.keyState['menu'][2]) {
-            setPauseMenu(true, true)
-        }
-        if (this.keyState['turbo'][2] != this.keyState['turbo'][1]) {
-            setTurboMode(this.keyState['turbo'][2])
         }
         for (var k in this.keyState) {
             if (this.keyState[k][1] != this.keyState[k][2]) {
@@ -355,9 +349,9 @@ class L3GBAInputs{
             }
             if(k==11){
                 if(value=='0'){
-                    setTurboMode(false)
+                    setTurboMode()
                 }else{
-                    setTurboMode(true)
+                    setTurboMode()
                 }
                 
             }
@@ -369,9 +363,9 @@ class L3GBAInputs{
             }
             if(k=='turbo'){
                 if(value=='0'){
-                    setTurboMode(false)
+                    setTurboMode()
                 }else{
-                    setTurboMode(true)
+                    setTurboMode()
                 }
             }
             this.keyState[k][index] = value

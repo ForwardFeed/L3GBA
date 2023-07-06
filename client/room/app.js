@@ -47,7 +47,7 @@ var gameID
 var romFileName
 
 var turboMode = false
-var turboInterval = -1
+var turboInterval = 0
 
 var gbaWidth
 var gbaHeight
@@ -255,6 +255,7 @@ function emuRunFrame() {
                     fps = 1000 / frameInMs
                 }
                 console.log('fps', fps)
+                console.log(this.roomSettings)
             }
             last128FrameTime = performance.now()
 
@@ -262,7 +263,8 @@ function emuRunFrame() {
         lastFrameTime = performance.now()
        
         if(turboMode==true){
-             //frame skipping loop
+            //frame skipping loop
+            console.log(roomSettings[4])
             for(let i=0; i<roomSettings[4]; i++){
                 Module._emuRunFrame(inputs.getVKState());
                 drawContext.putImageData(idata, 0, 0);
@@ -314,19 +316,12 @@ function showMsg(msg, time) {
     }, timeShown)
 }
 
-function setTurboMode(t) {
-    if(!t || t==0){
-        t = false
-    }else{
-        t=true
-    }
+function setTurboMode() {
+    
     if(roomSettings[3]==1){
         return //mode turbo disabled
     }
-    if (turboMode == t) {
-        return
-    }
-    turboMode = t
+    turboMode = !turboMode
 }
 /*
     @t bool pause state
@@ -351,6 +346,7 @@ function setPauseMenu(t, broadcast) {
     isRunning = !t && isStarted
     document.getElementById('menu').hidden = !t
     document.getElementById('pause').hidden = t
+    document.getElementById('vk-layer').hidden = t
 }
 
 localforage.ready().then(function () { }).catch(function (err) {
