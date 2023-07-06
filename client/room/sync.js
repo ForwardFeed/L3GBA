@@ -90,15 +90,25 @@ function addUser(userinfo, flag) {
 		clientNumber = userNumber
 	}
 	if (flag) {
-		let newUser = document.createElement("span")
-		newUser.id = "user-" + userNumber
-		newUser.innerText = username
+		var frag = new DocumentFragment()
+		var newUserdiv = document.createElement("div")
+		frag.append(newUserdiv)
 		if (status == 0) {
-			newUser.className = "user-unready"
+			newUserdiv.className = "user-div user-unready"
 		} else {
-			newUser.className = "user-ready"
+			newUserdiv.className = "user-div user-ready"
 		}
-		div.append(newUser)
+		newUserdiv.id = "user-" + userNumber
+		let newUser = document.createElement("span")
+		newUser.innerText = username
+		newUserdiv.append(newUser)
+		let ping = document.createElement("span")
+		ping.id = "ping-" + userNumber
+		newUserdiv.append(ping)
+		let pingIcon = document.createElement("img")
+		pingIcon.src="ping.png"
+		newUserdiv.append(pingIcon)
+		div.append(frag)
 	} else {
 		let child = document.getElementById("user-" + userNumber)
 		if (child) {
@@ -133,7 +143,9 @@ function checkAllReady() {
 function showPing(usersInfo){
 	let userArray = usersInfo.split("~")
 	for (let i = 0; i < userArray.length-1; i++) {
-		let usersInfo = userArray[i].split("#")
+		let userInfo = userArray[i].split("#")
+		let pingSpan = document.getElementById("ping-"+userInfo[0])
+		pingSpan.innerText=userInfo[1]
 	}
 }
 

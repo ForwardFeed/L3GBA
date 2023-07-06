@@ -127,12 +127,17 @@ legend {
     overflow-y: scroll;
 }
 
-#users>span {
+.user-div {
     margin-top: 7px;
     margin-left: 9px;
     margin-right: 9px;
 }
-
+.user-div>*{
+    margin-left: 9px;
+}
+.user-div>img{
+    margin-top: 4px;
+}
 #reconnect {
     height: 10vw;
     position: relative;
