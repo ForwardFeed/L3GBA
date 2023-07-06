@@ -48,7 +48,7 @@
                         <label for="setturbomode">Disable mode turbo</label>
                     </div>
                     <div class="room-set tooltip" >
-                        <span class="tooltiptext">skip X number frame</span>
+                        <span class="tooltiptext">skip X number of frame</span>
                         <input type="number" name="seturbospeed" id="seturbospeed"
                         min="2" max="9" value="2" tooltip="">
                         <label for="seturbospeed">Set turbo speed</label>
@@ -78,39 +78,48 @@
                 </div>
                 
             </div>
-            <div class="menu-div" id="kb-settings">
-                <legend>Keybind settings:</legend>
-                <div id="kb-set">
-                    <div class="two-row">
-                        <button class="btn-set-key key-met" data-key="menu">MENU </button>
-                        <button class="btn-set-key key-met" data-key="turbo">TURBO </button>
-                    </div>
-                    <div class="two-row">
-                        <button class="btn-set-key key-act" data-key="l">L </button>
-                        <button class="btn-set-key key-sup" data-key="select">SELECT </button>
-                    </div>
-                    <div class="two-row">
-                        <div class="three-col">
-                            <button class="btn-set-key key-act" data-key="a">A </button>
-                            <button class="btn-set-key key-dir" data-key="up">UP </button>
-                            <button class="btn-set-key key-act" data-key="b">B </button>
+            <div class="menu-div save-div" >
+                <div class="save-header">
+                    <legend class="save-legend">Keybind settings</legend>
+                    <legend class="save-legend">Personal settings</legend>
+                </div>
+                <div class="save-body">
+                    <div class="save-half-body" id="kb-settings">     
+                        <div id="kb-set">
+                            <div class="two-row">
+                                <button class="btn-set-key key-met" data-key="menu">MENU </button>
+                                <button class="btn-set-key key-met" data-key="turbo">TURBO </button>
+                            </div>
+                            <div class="two-row">
+                                <button class="btn-set-key key-act" data-key="l">L </button>
+                                <button class="btn-set-key key-sup" data-key="select">SELECT </button>
+                            </div>
+                            <div class="two-row">
+                                <div class="three-col">
+                                    <button class="btn-set-key key-act" data-key="a">A </button>
+                                    <button class="btn-set-key key-dir" data-key="up">UP </button>
+                                    <button class="btn-set-key key-act" data-key="b">B </button>
+                                </div>
+                                <div class="three-col">
+                                    <button class="btn-set-key key-dir" data-key="left">LEFT</button>
+                                    <button class="btn-set-key key-dir" data-key="down">DOWN </button>
+                                    <button class="btn-set-key key-dir" data-key="right">RIGHT </button>
+                                </div>
+                            </div>
+                            <div class="two-row">
+                                <button class="btn-set-key key-act" data-key="r">R </button>
+                                <button class="btn-set-key key-sup" data-key="start">START </button> 
+                            </div>
                         </div>
-                        <div class="three-col">
-                            <button class="btn-set-key key-dir" data-key="left">LEFT</button>
-                            <button class="btn-set-key key-dir" data-key="down">DOWN </button>
-                            <button class="btn-set-key key-dir" data-key="right">RIGHT </button>
-                        </div>
                     </div>
-                    <div class="two-row">
-                        <button class="btn-set-key key-act" data-key="r">R </button>
-                        <button class="btn-set-key key-sup" data-key="start">START </button> 
+                    <div class="save-half-body">
+                        <div class="menu-div">
+                            <label for="volume"> Emulator volume</label>
+                            <input type="range" id="volume" min="0" max="2" value="1" step="0.01">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="menu-div">
-                <label for="volume"> Emulator volume</label>
-                <input type="range" id="volume" min="0" max="2" value="1" step="0.01">
-            </div>
+            </div >
             <div class="menu-div" id="cheats">
                 <legend>Cheat code:</legend>
                 <textarea id="txt-code" rows="10"></textarea>

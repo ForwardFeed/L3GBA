@@ -66,6 +66,9 @@ class L3GBAInputs{
         document.getElementById('vk-layer').ontouchstart = (e) => {
             e.preventDefault()
         }
+            
+        window.onresize = this.adjustSize
+        window.onorientationchange = this.adjustSize
     }
     initKB(){
         this.keymapButtons()
@@ -190,7 +193,25 @@ class L3GBAInputs{
         return 'top:' + top + 'px;left:' + left + 'px;width:' + w + 'px;height:' + h + 'px;' + 'font-size:' + fontSize + 'px;line-height:' + h + 'px;'
     }
     
-    
+    adjustSize() {
+        var gbaMaxWidth = window.innerWidth
+        var gbaMaxHeight = window.innerHeight - 20
+        var l = 0
+        var w = gbaMaxWidth
+        var h = w / 240 * 160
+        if (h > gbaMaxHeight) {
+            h = gbaMaxHeight
+            w = h / 160 * 240
+        }
+        var scaleFator = (w / 240) // | 0
+        gbaWidth = 240 * scaleFator
+        gbaHeight = 160 * scaleFator
+        l += (window.innerWidth - gbaWidth) / 2;
+        canvas.style = 'width:' + gbaWidth + 'px;height:' + gbaHeight + 'px;left:' + l + 'px;'
+        this.adjustVKLayout()
+        adjustSize()
+    }
+
     adjustVKLayout() {
         var isLandscape = window.innerWidth > window.innerHeight
         var baseSize = Math.min(Math.min(window.innerWidth, window.innerHeight) * 0.14, 50)
@@ -455,6 +476,7 @@ class L3GBAInputs{
         document.onkeydown = (e)=>{this.hookKey(e)}
         document.onkeyup = ""
     }
+    
 }
 
 /*  H

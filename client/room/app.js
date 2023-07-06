@@ -163,7 +163,7 @@ function loadRomArrayBuffer(arrayBuffer) {
         // a homebrew! use file name as id
         gameID = romFileName
     }
-    console.log('gameID', gameID)
+    //console.log('gameID', gameID)
     Module.HEAPU8.set(u8, romBuffer)
     cheatCode = localStorage['cht-' + gameID] 
     if (cheatCode) {
@@ -282,31 +282,6 @@ function emuLoop() {
     emuRunFrame()
 }
 emuLoop()
-
-
-function adjustSize() {
-    var gbaMaxWidth = window.innerWidth
-    var gbaMaxHeight = window.innerHeight - 20
-    var l = 0
-    var w = gbaMaxWidth
-    var h = w / 240 * 160
-    if (h > gbaMaxHeight) {
-        h = gbaMaxHeight
-        w = h / 160 * 240
-    }
-    var scaleFator = (w / 240) // | 0
-    gbaWidth = 240 * scaleFator
-    gbaHeight = 160 * scaleFator
-    l += (window.innerWidth - gbaWidth) / 2;
-    canvas.style = 'width:' + gbaWidth + 'px;height:' + gbaHeight + 'px;left:' + l + 'px;'
-    inputs.adjustVKLayout()
-}
-
-window.onresize = adjustSize
-window.onorientationchange = adjustSize
-adjustSize()
-
-
 
 function checkSaveBufState() {
     if (!isRunning) {
