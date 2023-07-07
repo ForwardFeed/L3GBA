@@ -96,11 +96,10 @@ class L3GBAInputs{
             this.currentConnectedGamepad = -1
             return
         }
+
         for (var k in this.keyState) {
-            if(this.keyState[k][1]!=0){
-                this.setKeyState(k,1,0,true)
-            }else{
-                this.setKeyState(k,1,0,false)
+            if(this.keyState[k][2]!=0){
+                this.keyState[k][2]=0
             }
         }
         for (var k in this.gamePadKeyMap) {

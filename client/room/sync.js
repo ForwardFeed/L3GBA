@@ -259,7 +259,7 @@ let L3GBAAPIParsing = (data) => {
 			setUserReady(code.substring(2))
 			break;
 		case "s":
-			if (!isRunning) {
+			if (!hasStartedOnce) {
 				startEmulation()
 				let btn = document.getElementById("go")
 				btn.innerText = "Reset"

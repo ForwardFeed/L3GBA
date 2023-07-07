@@ -54,8 +54,8 @@ var gbaHeight
 var cheatCode
 
 var isStarted = false
+var hasStartedOnce = false
 var showMsgStop
-
 const inputs = new L3GBAInputs()
 inputs.init()
 
@@ -182,6 +182,7 @@ function loadRomArrayBuffer(arrayBuffer) {
 
 function startEmulation(){
     isStarted=true
+    hasStartedOnce=true
 	document.getElementById('menu').hidden = true
 	document.getElementById('pause').hidden = false
     loadSaveGame(0, function () {
@@ -345,7 +346,6 @@ function setPauseMenu(t, broadcast) {
     isRunning = !t && isStarted
     document.getElementById('menu').hidden = !t
     document.getElementById('pause').hidden = t
-    document.getElementById('vk-layer').hidden = t
 }
 
 localforage.ready().then(function () { }).catch(function (err) {
